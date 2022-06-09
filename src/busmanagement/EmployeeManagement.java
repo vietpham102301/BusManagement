@@ -8,7 +8,9 @@ import busmanagement.employee.Employee;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import views.PhanCong;
@@ -16,6 +18,7 @@ import views.QLChuyen;
 import views.QLTime;
 import views.QLVe;
 import views.Thongke;
+
 
 /**
  *
@@ -33,9 +36,51 @@ public class EmployeeManagement extends javax.swing.JFrame {
         deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
         displayEmpList();
+        empmButton.requestFocus();
         
     }
     
+    private boolean isLetters(String s) {
+      if (s == null) {
+         return false;
+      }
+      int len = s.length();
+      for (int i = 0; i < len; i++) {
+         // checks whether the character is not a letter
+         // if it is not a letter ,it will return false
+         if ((Character.isLetter(s.charAt(i)) == false) ) {
+            return false;
+         }
+      }
+      return true;
+   }
+    
+    private boolean isDigits(String s)
+    {
+        if(s== null)
+        {
+            return false;
+        }
+        try{
+            Float.parseFloat(s);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+    
+    public boolean validVNName(String name)
+    {
+        Pattern pattern;
+        final String namePattern = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s|_]+$";
+        
+        pattern = Pattern.compile(namePattern);
+        return pattern.matcher(name).matches();
+    }
+   
     public Connection establishCon()
     {
         
@@ -167,6 +212,8 @@ public class EmployeeManagement extends javax.swing.JFrame {
         identityNumText = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("EmpFrame"); // NOI18N
@@ -257,15 +304,13 @@ public class EmployeeManagement extends javax.swing.JFrame {
         inforPanelLayout.setHorizontalGroup(
             inforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inforPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 19, Short.MAX_VALUE))
-            .addGroup(inforPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2))
-            .addGroup(inforPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(inforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(inforPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 13, Short.MAX_VALUE))
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -274,16 +319,17 @@ public class EmployeeManagement extends javax.swing.JFrame {
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(accButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(empmButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(empmButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         inforPanelLayout.setVerticalGroup(
             inforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inforPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                .addGap(34, 34, 34)
+                .addGap(50, 50, 50)
                 .addComponent(empmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(accButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -300,7 +346,8 @@ public class EmployeeManagement extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -315,7 +362,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(inforPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setPreferredSize(new java.awt.Dimension(983, 720));
@@ -332,7 +379,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Tên", "Họ & đệm", "Ngày sinh", "Địa chỉ", "Giới tính", "Ngày làm việc", "Chức vụ", "Lương", "CMND"
+                "ID", "Tên", "Họ & đệm", "Ngày sinh", "Địa chỉ", "Giới tính", "Ngày làm việc", "Chức vụ", "Lương(vnd)", "CMND"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -466,11 +513,21 @@ public class EmployeeManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Quản lý nhân viên");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,8 +535,8 @@ public class EmployeeManagement extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(fNameText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                                .addComponent(lNameText, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addComponent(fNameText, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lNameText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -487,19 +544,16 @@ public class EmployeeManagement extends javax.swing.JFrame {
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addGap(1, 1, 1)
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel3Layout.createSequentialGroup()
-                                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(bdayText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(20, 20, 20)
-                                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(bMonthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(20, 20, 20)
-                                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel12)
-                                                .addComponent(bYearText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(jButton1))
+                                        .addComponent(bdayText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(20, 20, 20)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(bMonthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(20, 20, 20)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel12)
+                                        .addComponent(bYearText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(0, 12, Short.MAX_VALUE))))
                         .addGap(5, 5, 5))
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -539,27 +593,39 @@ public class EmployeeManagement extends javax.swing.JFrame {
                             .addComponent(addressText, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(identityNumText)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
+                            .addComponent(identityNumText, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(80, 80, 80)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(posCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(399, 399, 399)
+                        .addComponent(jLabel17))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(381, 381, 381)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
@@ -602,7 +668,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
                     .addComponent(swDayText, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(swMonthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(swYearText, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -625,9 +691,9 @@ public class EmployeeManagement extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
         );
 
         pack();
@@ -644,11 +710,24 @@ public class EmployeeManagement extends javax.swing.JFrame {
         if(selectedRow >=0)
         {
             String lName, fName, address, idNum, salary, pos, sex;
-            lName = lNameText.getText();
-            fName = fNameText.getText();
-            idNum = identityNumText.getText();
-            address = addressText.getText();
-            salary = salaryText.getText();
+            lName = lNameText.getText().trim();
+            fName = fNameText.getText().trim();
+            idNum = identityNumText.getText().trim();
+            address = addressText.getText().trim();
+       if(fNameText.getText().equals("") ||lNameText.equals("")||addressText.getText().equals("")||posCombo.getSelectedItem().toString().equals("")||salaryText.getText().equals("")||sexCombo.getSelectedItem().toString().equals("")||bdayText.getText().equals("")||bMonthCombo.getSelectedItem().toString().equals("")||bYearText.getText().equals("")||swDayText.getText().equals("")||swMonthCombo.getSelectedItem().toString().equals("")||swYearText.getText().equals(""))
+       {
+           
+           JOptionPane.showMessageDialog(this, "Vui lòng điển vào tất cả các trường");
+           return;
+       }
+            
+        if(!isDigits(salaryText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Lương chỉ được nhập số");
+            return;
+        }
+            
+            salary = salaryText.getText().trim();
             pos = posCombo.getSelectedItem().toString();
             
             sex = sexCombo.getSelectedItem().toString();
@@ -669,7 +748,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
             int bDay, bMonth, bYear;
             int swDay, swMonth, swYear;
             
-            bDay = Integer.parseInt(bdayText.getText());
+            
             switch (bMonthCombo.getSelectedItem().toString())
         {
             case "Tháng 1":
@@ -712,9 +791,42 @@ public class EmployeeManagement extends javax.swing.JFrame {
                 bMonth = 0;
                        
         }
-            bYear = Integer.parseInt(bYearText.getText());
+            if(!isDigits(bYearText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Năm sinh chỉ được nhập số năm từ "+Integer.toString((LocalDate.now().getYear()-60)) +" đến " + Integer.toString((LocalDate.now().getYear()-18)));
+            return;
+        }
+        else if(isDigits(bYearText.getText()))
+        {
+            if(Integer.parseInt(bYearText.getText()) < LocalDate.now().getYear()-60 || Integer.parseInt(bYearText.getText()) > LocalDate.now().getYear()-18)
+            {
+                JOptionPane.showMessageDialog(this, "Năm sinh chỉ được nhập số năm từ "+Integer.toString((LocalDate.now().getYear()-60)) +" đến " + Integer.toString((LocalDate.now().getYear()-18)));
+                return;                
+            }
+             
+        }
+        
+        bYear = Integer.parseInt(bYearText.getText().trim());
+        
+        
+        if(!isDigits(swYearText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Năm bắt đầu làm việc chỉ được nhập \"số\" năm từ "+Integer.toString(bYear + 18) +" đến " + Integer.toString(LocalDate.now().getYear()));
+            return;
+        }
+        else if(isDigits(swYearText.getText()))
+        {
+            if(Integer.parseInt(swYearText.getText()) < (bYear+18) || Integer.parseInt(swYearText.getText()) > LocalDate.now().getYear())
+            {
+                System.out.println("run");
+                JOptionPane.showMessageDialog(this, "Năm bắt đầu làm việc chỉ được nhập \"số\" năm từ "+Integer.toString(bYear + 18) +" đến " + Integer.toString(LocalDate.now().getYear()));
+                return;                
+            }
+             
+        }
+        swYear = Integer.parseInt(swYearText.getText().trim());
             
-            swDay = Integer.parseInt(swDayText.getText());
+            
             switch (swMonthCombo.getSelectedItem().toString())
        {
             case "Tháng 1":
@@ -757,7 +869,124 @@ public class EmployeeManagement extends javax.swing.JFrame {
                 swMonth = 0;
                        
         }
-            swYear = Integer.parseInt(swYearText.getText());
+            
+            YearMonth my = null;
+        if(bMonth !=0)
+        {
+            my = YearMonth.of(bYear, bMonth);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng sinh");
+            return;
+        }
+        
+        
+        
+        if(!isDigits(bdayText.getText()))
+        {
+           JOptionPane.showMessageDialog(this, "Ngày sinh chỉ được nhập số");
+           return;
+        }
+        else if(isDigits(bdayText.getText()))
+        {
+//            System.out.println("run");
+            bDay =Integer.parseInt(bdayText.getText().trim());
+//            System.out.println(bDay);
+            System.out.println(my.lengthOfMonth());
+            if(bDay < 1 || bDay >my.lengthOfMonth())
+            {
+//                System.out.println("run2");
+                JOptionPane.showMessageDialog(this, "Ngày sinh hợp lệ trong tháng từ 1-"+Integer.toString(my.lengthOfMonth()));
+                return;
+            }
+            
+                
+        }
+        
+        
+        bDay = Integer.parseInt(bdayText.getText().trim());
+        
+        
+          YearMonth my2 = null;
+         if(swMonth !=0)
+        {
+            my2 = YearMonth.of(swYear, swMonth);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng bắt đầu làm việc");
+            return;
+        }
+         
+          if(!isDigits(swDayText.getText()))
+        {
+           JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc chỉ được nhập số");
+           return;
+        }
+        else if(isDigits(swDayText.getText()))
+        {
+//            System.out.println("run");
+            swDay =Integer.parseInt(swDayText.getText().trim());
+//            System.out.println(bDay);
+            System.out.println(my2.lengthOfMonth());
+            if(swDay < 1 || swDay >my2.lengthOfMonth())
+            {
+//                System.out.println("run2");
+                JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc hợp lệ trong tháng từ 1-"+Integer.toString(my2.lengthOfMonth()));
+                return;
+            }
+            
+                
+        }
+          
+          swDay = Integer.parseInt(swDayText.getText().trim());
+            if(pos.equals("--Chọn chức vụ--"))
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn chức vụ");
+            return;
+        }
+        else if(sex == "0")
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn giới tính");
+            return;
+        }
+        else if(bMonth == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng sinh");
+            return;
+        }
+        else if(swMonth ==0)
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng bắt đầu làm việc");
+            return;
+        }
+        else if(!validVNName(lName))
+        {
+            System.out.println(validVNName(lName));
+            JOptionPane.showMessageDialog(this, "Họ & tên chỉ được nhập ký tự");
+            return;
+        }
+        else if(!validVNName(fName))
+        {
+            
+            JOptionPane.showMessageDialog(this, "Tên chỉ được nhập ký tự");
+            return;
+        }
+        else if(!isDigits(idNum))
+        {
+            JOptionPane.showMessageDialog(this, "Số CMND/CCCD chỉ được nhập số và độ dài phải từ 9-12 ký tự");
+            return;
+        }
+        else if(isDigits(idNum))
+        {
+            if(idNum.length()<9 || idNum.length() >12)
+            {
+                JOptionPane.showMessageDialog(this, "Số CMND/CCCD chỉ được nhập số và độ dài phải từ 9-12 ký tự");
+                return;
+            }
+        }
+        
             
             bDate = LocalDate.of(bYear, bMonth, bDay);
             swDate = LocalDate.of(swYear, swMonth, swDay);
@@ -798,7 +1027,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
             swMonthCombo.setSelectedItem("Chọn tháng");
             sexCombo.setSelectedItem("--Chọn giới tính--");
             posCombo.setSelectedItem("--Chọn chức vụ--");
-                
+            addButton.setEnabled(true);
             }
             catch (Exception e)
             {
@@ -820,27 +1049,69 @@ public class EmployeeManagement extends javax.swing.JFrame {
         
        if(fNameText.getText().equals("") ||lNameText.equals("")||addressText.getText().equals("")||posCombo.getSelectedItem().toString().equals("")||salaryText.getText().equals("")||sexCombo.getSelectedItem().toString().equals("")||bdayText.getText().equals("")||bMonthCombo.getSelectedItem().toString().equals("")||bYearText.getText().equals("")||swDayText.getText().equals("")||swMonthCombo.getSelectedItem().toString().equals("")||swYearText.getText().equals(""))
        {
-           JOptionPane.showMessageDialog(this, "Chưa nhập đủ thông tin");
+           JOptionPane.showMessageDialog(this, "Vui lòng điển vào tất cả các trường");
        }
        else
        {
            String lName, fName, address, sex, pos, identityNum;
         double salary;
-        int bDay, swDay, bYear, swYear;
+        int bDay=0, swDay, bYear, swYear;
         int bMonth, swMonth;
         Employee emp;
         LocalDate bDate, swDate;
-        lName = lNameText.getText();
-        fName = fNameText.getText();
-        address = addressText.getText();
-        identityNum = identityNumText.getText();
+        lName = lNameText.getText().trim();
+        fName = fNameText.getText().trim();
+        address = addressText.getText().trim();
+        identityNum = identityNumText.getText().trim();
         pos = posCombo.getSelectedItem().toString();
-        salary = Double.parseDouble(salaryText.getText());
-        bDay = Integer.parseInt(bdayText.getText());
-        swDay = Integer.parseInt(swDayText.getText());
-      
-        bYear = Integer.parseInt(bYearText.getText());
-        swYear = Integer.parseInt(swYearText.getText());
+        
+        
+          if(!isDigits(salaryText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Lương chỉ được nhập số");
+            return;
+        }
+        
+        salary = Double.parseDouble(salaryText.getText().trim());
+        
+        
+
+        
+        if(!isDigits(bYearText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Năm sinh chỉ được nhập số năm từ "+Integer.toString((LocalDate.now().getYear()-60)) +" đến " + Integer.toString((LocalDate.now().getYear()-18)));
+            return;
+        }
+        else if(isDigits(bYearText.getText()))
+        {
+            if(Integer.parseInt(bYearText.getText()) < LocalDate.now().getYear()-60 || Integer.parseInt(bYearText.getText()) > LocalDate.now().getYear()-18)
+            {
+                JOptionPane.showMessageDialog(this, "Năm sinh chỉ được nhập số năm từ "+Integer.toString((LocalDate.now().getYear()-60)) +" đến " + Integer.toString((LocalDate.now().getYear()-18)));
+                return;                
+            }
+             
+        }
+        
+        bYear = Integer.parseInt(bYearText.getText().trim());
+        
+        
+        if(!isDigits(swYearText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Năm bắt đầu làm việc chỉ được nhập \"số\" năm từ "+Integer.toString(bYear + 18) +" đến " + Integer.toString(LocalDate.now().getYear()));
+            return;
+        }
+        else if(isDigits(swYearText.getText()))
+        {
+            if(Integer.parseInt(swYearText.getText()) < (bYear+18) || Integer.parseInt(swYearText.getText()) > LocalDate.now().getYear())
+            {
+                System.out.println("run");
+                JOptionPane.showMessageDialog(this, "Năm bắt đầu làm việc chỉ được nhập \"số\" năm từ "+Integer.toString(bYear + 18) +" đến " + Integer.toString(LocalDate.now().getYear()));
+                return;                
+            }
+             
+        }
+        swYear = Integer.parseInt(swYearText.getText().trim());
+        
         switch(sexCombo.getSelectedItem().toString())
         {
             case "Nam":
@@ -940,25 +1211,127 @@ public class EmployeeManagement extends javax.swing.JFrame {
                 swMonth = 0;
                        
         }
+        YearMonth my = null;
+        if(bMonth !=0)
+        {
+            my = YearMonth.of(bYear, bMonth);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng sinh");
+            return;
+        }
+        
+        
+        
+        if(!isDigits(bdayText.getText().trim()))
+        {
+           JOptionPane.showMessageDialog(this, "Ngày sinh chỉ được nhập số");
+           return;
+        }
+        else if(isDigits(bdayText.getText().trim()))
+        {
+//            System.out.println("run");
+            bDay =Integer.parseInt(bdayText.getText());
+//            System.out.println(bDay);
+         //   System.out.println(my.lengthOfMonth());
+            if(bDay < 1 || bDay >my.lengthOfMonth())
+            {
+//                System.out.println("run2");
+                JOptionPane.showMessageDialog(this, "Ngày sinh hợp lệ trong tháng từ 1-"+Integer.toString(my.lengthOfMonth()));
+                return;
+            }
+            
+                
+        }
+        
+        
+        bDay = Integer.parseInt(bdayText.getText().trim());
+        
+        
+          YearMonth my2 = null;
+         if(swMonth !=0)
+        {
+            my2 = YearMonth.of(swYear, swMonth);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng bắt đầu làm việc");
+            return;
+        }
+         
+          if(!isDigits(swDayText.getText()))
+        {
+           JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc chỉ được nhập số");
+           return;
+        }
+        else if(isDigits(swDayText.getText()))
+        {
+//            System.out.println("run");
+            swDay =Integer.parseInt(swDayText.getText().trim());
+//            System.out.println(bDay);
+            System.out.println(my2.lengthOfMonth());
+            if(swDay < 1 || swDay >my2.lengthOfMonth())
+            {
+//                System.out.println("run2");
+                JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc hợp lệ trong tháng từ 1-"+Integer.toString(my2.lengthOfMonth()));
+                return;
+            }
+            
+                
+        }
+          
+          swDay = Integer.parseInt(swDayText.getText().trim());
+        
         if(pos.equals("--Chọn chức vụ--"))
         {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn chức vụ");
+            return;
         }
         else if(sex == "0")
         {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn giới tính");
+            return;
         }
         else if(bMonth == 0)
         {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng sinh");
+            return;
         }
         else if(swMonth ==0)
         {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng bắt đầu làm việc");
+            return;
         }
-        else
+        else if(!validVNName(lName))
         {
-            bDate = LocalDate.of(bYear, bMonth, bDay);
+            System.out.println(validVNName(lName) + "here");
+            JOptionPane.showMessageDialog(this, "Họ & tên chỉ được nhập ký tự");
+            return;
+        }
+        else if(!validVNName(fName))
+        {
+            JOptionPane.showMessageDialog(this, "Tên chỉ được nhập ký tự");
+            return;
+        }
+        else if(!isDigits(identityNum))
+        {
+            JOptionPane.showMessageDialog(this, "Số CMND/CCCD chỉ được nhập số và độ dài phải từ 9-12 ký tự");
+            return;
+        }
+        else if(isDigits(identityNum))
+        {
+            if(identityNum.length()<9 || identityNum.length() >12)
+            {
+                JOptionPane.showMessageDialog(this, "Số CMND/CCCD chỉ được nhập số và độ dài phải từ 9-12 ký tự");
+                return;
+            }
+        }
+        
+      
+       
+        
+              bDate = LocalDate.of(bYear, bMonth, bDay);
         swDate = LocalDate.of(swYear, swMonth, swDay);
            Connection con =null;
            Statement st = null;
@@ -969,10 +1342,21 @@ public class EmployeeManagement extends javax.swing.JFrame {
             + "encrypt=true;trustServerCertificate=true";
             //String url = "jdbc:sqlserver:MYPC-FROM-2019\\SERVER1;databaseName=BusManagement2;integratedSecurity=true";
             
-            //ResultSet rs;
+            ResultSet rs;
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             con = DriverManager.getConnection(connectionUrl, "sa", "viet1234");
             String sqlAddEmp = "EXEC addEmp @f_name=N'"+fName+"', "+"@l_name=N'"+lName+"', "+"@birth_date='"+bDate+"', "+"@address=N'"+address+"', "+ "@sex='"+sex+"', "+"@sw_date='"+ swDate+"', "+"@pos=N'"+pos+"', "+ "@salary='"+salary+"', " +"@identity_num='"+identityNum+"'";
+            
+            String checkUniqueKey = "SELECT * FROM EMPLOYEE WHERE identity_num= "+identityNum;
+            
+            st = con.createStatement();
+            rs = st.executeQuery(checkUniqueKey);
+            if(rs.next())
+            {
+                JOptionPane.showMessageDialog(this, "Số CMND/CCCD bị trùng với người khác trong hệ thống");
+                return;
+            }
+            
             st = con.createStatement();
             st.executeUpdate(sqlAddEmp);
             
@@ -1041,7 +1425,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
                
                
            }
-       }
+     
         }
         
         
@@ -1054,6 +1438,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
                 acc.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                acc.setInfor(this.infor);
+               
                this.dispose();
                 
     }//GEN-LAST:event_accButtonActionPerformed
@@ -1068,10 +1453,18 @@ public class EmployeeManagement extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+        
         int row = empTable.getSelectedRow();
         String cell = empTable.getModel().getValueAt(row, 0).toString();
         String deleteQuery = "DELETE FROM EMPLOYEE WHERE emp_id= "+cell;
-         try {
+        String checkQueryInTableWork = "SELECT * FROM WORK WHERE emp_id= "+ cell;
+        String checkQueryInTableAccount = "SELECT * FROM ACCOUNT WHERE emp_id= "+ cell;
+        String deleteQueryInBusEmp = "DELETE FROM BUS_EMP WHERE emp_id= "+ cell;
+        ResultSet rs;
+        int result= JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?");
+        if(result==0)
+        {
+            try {
               String connectionUrl
             = "jdbc:sqlserver://localhost:1433;"
             + "databaseName=BusManagement;"
@@ -1081,6 +1474,52 @@ public class EmployeeManagement extends javax.swing.JFrame {
             //ResultSet rs;
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(connectionUrl, "sa", "viet1234");
+            
+            st = con.createStatement();
+            rs = st.executeQuery(checkQueryInTableWork);
+            while(rs.next())
+            {
+                System.out.println("this run");
+                String workYear = rs.getString("work_day").split("-")[0];
+                System.out.println(workYear);
+                if(Integer.parseInt(workYear) == LocalDate.now().getYear())
+                {
+                    System.out.println("run in if st");
+                    JOptionPane.showMessageDialog(this, "Không được xóa nhân viên này có hồ sơ làm việc trong năm nay");
+                    deleteButton.setEnabled(false);
+            updateButton.setEnabled(false);
+            addButton.setEnabled(true);
+             empTable.getSelectionModel().clearSelection();
+            lNameText.setText("");
+            fNameText.setText("");
+            addressText.setText("");
+            identityNumText.setText("");
+            salaryText.setText("");
+            bdayText.setText("");
+            bYearText.setText("");
+            swDayText.setText("");
+            swYearText.setText("");
+            bMonthCombo.setSelectedItem("Chọn tháng");
+            swMonthCombo.setSelectedItem("Chọn tháng");
+            sexCombo.setSelectedItem("--Chọn giới tính--");
+            posCombo.setSelectedItem("--Chọn chức vụ--");
+                    return;
+                }
+            }
+            
+//            st = con.createStatement();
+//            rs = st.executeQuery(checkQueryInTableAccount);
+//            if(rs.next())
+//            {
+//                JOptionPane.showMessageDialog(this, "Phải xóa tài khoản của nhân viên này trước!");
+//                return;
+//            }
+            
+//            st = con.createStatement();
+//            st.executeUpdate(deleteQueryInBusEmp);
+            
+            
+            
             st = con.createStatement();
             st.executeUpdate(deleteQuery);
             JOptionPane.showMessageDialog(this, "Xóa thành công");
@@ -1090,6 +1529,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
             con.close();
             deleteButton.setEnabled(false);
             updateButton.setEnabled(false);
+            addButton.setEnabled(true);
              empTable.getSelectionModel().clearSelection();
             lNameText.setText("");
             fNameText.setText("");
@@ -1110,11 +1550,33 @@ public class EmployeeManagement extends javax.swing.JFrame {
          {
              e.printStackTrace();
          }
+        }
+        else{
+            deleteButton.setEnabled(false);
+            updateButton.setEnabled(false);
+            addButton.setEnabled(true);
+             empTable.getSelectionModel().clearSelection();
+            lNameText.setText("");
+            fNameText.setText("");
+            addressText.setText("");
+            identityNumText.setText("");
+            salaryText.setText("");
+            bdayText.setText("");
+            bYearText.setText("");
+            swDayText.setText("");
+            swYearText.setText("");
+            bMonthCombo.setSelectedItem("Chọn tháng");
+            swMonthCombo.setSelectedItem("Chọn tháng");
+            sexCombo.setSelectedItem("--Chọn giới tính--");
+            posCombo.setSelectedItem("--Chọn chức vụ--");
+        }
+         
         
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void empTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empTableMouseClicked
         // TODO add your handling code here:
+        addButton.setEnabled(false);
         int selectedRow = empTable.getSelectedRow();
         DefaultTableModel dfModel = (DefaultTableModel) empTable.getModel();
         lNameText.setText(dfModel.getValueAt(selectedRow, 2).toString());
@@ -1248,6 +1710,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        addButton.setEnabled(true);
          empTable.getSelectionModel().clearSelection();
             lNameText.setText("");
             fNameText.setText("");
@@ -1307,22 +1770,23 @@ public class EmployeeManagement extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        
-         QLTime time = new QLTime();
-                time.setVisible(true);
-                time.setLocationRelativeTo(null);
-               // System.out.println(this.infor);
-               time.setInfor(this.infor);
-               this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
         QLChuyen route = new QLChuyen();
                 route.setVisible(true);
                 route.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                route.setInfor(this.infor);
+               this.dispose();
+         
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+               QLTime time = new QLTime();
+                time.setVisible(true);
+                time.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               time.setInfor(this.infor);
                this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -1339,7 +1803,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-         Thongke st = new Thongke();
+         Statistic st = new Statistic();
                 st.setVisible(true);
                 st.setLocationRelativeTo(null);
                // System.out.println(this.infor);
@@ -1436,6 +1900,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1448,6 +1913,7 @@ public class EmployeeManagement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lNameText;
     private javax.swing.JComboBox<String> posCombo;
     private javax.swing.JTextField salaryText;

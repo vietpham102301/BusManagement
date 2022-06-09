@@ -6,10 +6,12 @@ package views;
 
 //import com.sun.jdi.connect.spi.Connection;
 import busmanagement.Login;
+import busmanagement.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
 
@@ -31,10 +33,39 @@ public class QLChuyen extends javax.swing.JFrame {
         this.infor = infor;
         this.inforText.setText(infor);
     }
+       
+       
+        private boolean isDigits(String s)
+    {
+        if(s== null)
+        {
+            return false;
+        }
+        try{
+            Float.parseFloat(s);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+        
+        
+        public boolean validUnicodeVn(String name)
+    {
+        Pattern pattern;
+        final String namePattern = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s|_-]+$";
+        
+        pattern = Pattern.compile(namePattern);
+        return pattern.matcher(name).matches();
+    }
     
     
     public QLChuyen() {
         initComponents();
+        jButton6.requestFocus();
     }
 
     /**
@@ -65,11 +96,22 @@ public class QLChuyen extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jtfBack = new javax.swing.JTextField();
-        jtfGo = new javax.swing.JTextField();
-        jtfTime = new javax.swing.JTextField();
+        goTurnText = new javax.swing.JTextField();
+        backTurnText = new javax.swing.JTextField();
+        timeTravelText = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableMain = new javax.swing.JTable();
+        btReset = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        busStopNumText = new javax.swing.JTextField();
+        breakTimeText = new javax.swing.JTextField();
+        costText = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        startPointText = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -77,12 +119,32 @@ public class QLChuyen extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(256, 720));
 
         jButton1.setText(" Quản lý nhân viên");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Quản lý xe bus");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Quản lý tài khoản");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Quản lý chuyến xe");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Quản lý tuyến xe");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -140,10 +202,10 @@ public class QLChuyen extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addComponent(jScrollPane4)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -165,9 +227,9 @@ public class QLChuyen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,11 +243,11 @@ public class QLChuyen extends javax.swing.JFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addGap(54, 54, 54))
         );
 
         jbtFix.setText("Sửa");
@@ -209,24 +271,29 @@ public class QLChuyen extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Điểm đến");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Lượt đi:");
         jLabel2.setFocusTraversalPolicyProvider(true);
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 40));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Điểm đi");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Lượt về:");
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 40));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Thời gian");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Thời gian di chuyển:");
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 40));
 
-        jtfBack.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        goTurnText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jtfGo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        backTurnText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jtfTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        timeTravelText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        timeTravelText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                timeTravelTextKeyTyped(evt);
+            }
+        });
 
         tableMain.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableMain.setModel(new javax.swing.table.DefaultTableModel(
@@ -264,6 +331,56 @@ public class QLChuyen extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tableMain);
 
+        btReset.setText("Đặt lại");
+        btReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btResetActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Số trạm:");
+        jLabel5.setFocusTraversalPolicyProvider(true);
+        jLabel5.setPreferredSize(new java.awt.Dimension(150, 40));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setText("Thời gian giãn cách:");
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 40));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Chi phí:");
+        jLabel7.setPreferredSize(new java.awt.Dimension(150, 40));
+
+        busStopNumText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        busStopNumText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                busStopNumTextKeyTyped(evt);
+            }
+        });
+
+        breakTimeText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        breakTimeText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                breakTimeTextKeyTyped(evt);
+            }
+        });
+
+        costText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        costText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                costTextKeyTyped(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Điểm bắt đầu:");
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 40));
+
+        startPointText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Quản lý tuyến xe");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,29 +389,60 @@ public class QLChuyen extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btReset, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 648, Short.MAX_VALUE)
                                 .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jbtFix, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1006, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(153, 153, 153)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1006, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(goTurnText, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(69, 69, 69)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(backTurnText, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(busStopNumText, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(163, 163, 163)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(breakTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(60, 60, 60)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(costText, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(509, 509, 509)
+                                        .addComponent(timeTravelText, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(92, 92, 92)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(startPointText, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfBack, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(133, 133, 133)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfGo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(111, 111, 111)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfTime, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(28, 28, 28))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(412, 412, 412))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,22 +451,40 @@ public class QLChuyen extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtfBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfGo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(goTurnText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backTurnText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(timeTravelText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startPointText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(busStopNumText)
+                    .addComponent(costText)
+                    .addComponent(breakTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtFix, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtFix, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btReset, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
 
@@ -328,7 +494,7 @@ public class QLChuyen extends javax.swing.JFrame {
     private void showData(){
         try{
             //tableMain.removeAll();
-            String[] arr = {"ID Chuyến","Điểm đến","Điểm đi","Thời gian"};
+            String[] arr = {"Tuyến số","Lượt đi","Lượt về","Thời gian di chuyển (h)","Số trạm", "Điểm bắt đầu","Thời gian giãn cách","Chi phí(vnd)"};
             DefaultTableModel model=  new DefaultTableModel(arr,0);
             
             Connection connection = DBConnection.getConnection();
@@ -341,6 +507,10 @@ public class QLChuyen extends javax.swing.JFrame {
                 vt.add(rs.getString("go_turn"));
                 vt.add(rs.getString("back_turn"));
                 vt.add(rs.getString("time_travel"));
+                vt.add(rs.getString("bus_stop_num"));
+                vt.add(rs.getString("start_point"));
+                vt.add(rs.getString("time_break"));
+                vt.add(rs.getString("gas_cost"));
                 model.addRow(vt);
     
         }
@@ -351,6 +521,27 @@ public class QLChuyen extends javax.swing.JFrame {
         }
         
 
+    }
+    
+    private boolean checkID(){
+          
+        int pos= tableMain.getSelectedRow();
+        String id= tableMain.getModel().getValueAt(pos, 0).toString();
+          
+        try{
+            Connection connection = DBConnection.getConnection();
+            String query= "SELECT route_id FROM dbo.BUS WHERE route_id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, id);
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 
@@ -366,43 +557,115 @@ public class QLChuyen extends javax.swing.JFrame {
     private void tableMainAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tableMainAncestorAdded
         showData();
         //jtaNoti.setText("Admin");
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        
     }//GEN-LAST:event_tableMainAncestorAdded
 
     private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
         
         
-        if(jtfBack.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Điểm đến không được rỗng.");
-            jtfBack.requestFocus();
+        if(goTurnText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tuyến đường lượt đi");
+            goTurnText.requestFocus();
             return;
-        }else if(jtfGo.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Điểm đi không được rỗng.");
-            jtfGo.requestFocus();
+        }else if(backTurnText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tuyến đường lượt về");
+            backTurnText.requestFocus();
             return;
-        }else if(jtfTime.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Thời gian không được rỗng.");
-            jtfTime.requestFocus();
+        }else if(timeTravelText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập thời gian di chuyển");
+            timeTravelText.requestFocus();
+            return;
+        }else if(startPointText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập điểm bắt đầu");
+            timeTravelText.requestFocus();
+            return;
+        }else if(busStopNumText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập số trạm");
+            timeTravelText.requestFocus();
+            return;
+        }else if(breakTimeText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập thời gian dãn cách");
+            timeTravelText.requestFocus();
+            return;
+        }else if(costText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập Chi phí");
+            timeTravelText.requestFocus();
+            return;
+        }
+        
+        
+        
+        if(!validUnicodeVn(goTurnText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Lượt đi chỉ được nhập ký tự và dấu phân cách \"-\"");
+            return;
+        }
+        
+        if(!validUnicodeVn(backTurnText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Lượt đi chỉ được nhập ký tự và dấu phân cách \"-\"");
+            return;
+        }
+        
+        
+        if(!isDigits(timeTravelText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Thời gian di chuyển chỉ được nhập số (h)");
+            return;
+        }
+        
+        if(!validUnicodeVn(startPointText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Điểm bắt đầu chỉ được nhập ký tự");
+            return;
+        }
+        
+        if(!isDigits(busStopNumText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Số trạm chỉ được nhập số");
+            return;
+        }
+        
+        if(!isDigits(breakTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Thời gian giãn cách chỉ được nhập số (p)");
+            return;
+        }
+        
+        if(!isDigits(costText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Chi phí chỉ được nhập số");
             return;
         }
         
         
             try{
                 Connection connection = DBConnection.getConnection();
-                String query= "INSERT INTO dbo.ROUTE(go_turn, back_turn, time_travel)"
-                        + "VALUES(?,?,?)";
+                String query= "INSERT INTO dbo.ROUTE(go_turn, back_turn, time_travel, start_point,bus_stop_num,time_break,gas_cost)"
+                        + "VALUES(?,?,?,?,?,?,?)";
                 PreparedStatement ps = connection.prepareStatement(query);
                 
-                ps.setString(1,jtfBack.getText());
-                ps.setString(2,jtfGo.getText());
-                ps.setString(3,jtfTime.getText());
+                ps.setString(1,goTurnText.getText());
+                ps.setString(2,backTurnText.getText());
+                ps.setString(3,timeTravelText.getText());
+                ps.setString(4,startPointText.getText());
+                ps.setString(5,busStopNumText.getText());
+                ps.setString(6,breakTimeText.getText());
+                ps.setString(7,costText.getText());
                 
                 ps.execute();
                 showData();
                 DBConnection.closeConnection(connection);
 
-                jtfBack.setText("");
-                jtfGo.setText("");
-                jtfTime.setText("");
+                goTurnText.setText("");
+                backTurnText.setText("");
+                timeTravelText.setText("");
+                startPointText.setText("");
+                busStopNumText.setText("");
+                breakTimeText.setText("");
+                costText.setText("");
                 JOptionPane.showMessageDialog(null, "Thêm thành công.");
                 
             } catch (SQLException ex) {
@@ -420,6 +683,17 @@ public class QLChuyen extends javax.swing.JFrame {
             int pos= tableMain.getSelectedRow();
             String data= tableMain.getModel().getValueAt(pos, 0).toString();
             
+            if(checkID()== true){
+            JOptionPane.showMessageDialog(null, "Tuyến này đang được phân công không thể xóa!");
+            goTurnText.setText("");
+                backTurnText.setText("");
+                timeTravelText.setText("");
+                startPointText.setText("");
+                busStopNumText.setText("");
+                breakTimeText.setText("");
+                costText.setText("");
+            return;
+            }else{
             try{
                 Connection connection = DBConnection.getConnection();
                 String query= "DELETE FROM dbo.ROUTE WHERE route_id= ?";
@@ -430,19 +704,47 @@ public class QLChuyen extends javax.swing.JFrame {
                 DBConnection.closeConnection(connection);
                 
                 JOptionPane.showMessageDialog(null, "Xóa thành công.");
+                goTurnText.setText("");
+                backTurnText.setText("");
+                timeTravelText.setText("");
+                startPointText.setText("");
+                busStopNumText.setText("");
+                breakTimeText.setText("");
+                costText.setText("");
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        }
+        else{
+            goTurnText.setText("");
+                backTurnText.setText("");
+                timeTravelText.setText("");
+                startPointText.setText("");
+                busStopNumText.setText("");
+                breakTimeText.setText("");
+                costText.setText("");
+        }
         
+        jbtAdd.setEnabled(true);
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
     }//GEN-LAST:event_jbtDelActionPerformed
 
     private void tableMainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMainMouseClicked
         int pos= tableMain.getSelectedRow();
         
-        jtfBack.setText(tableMain.getModel().getValueAt(pos, 1).toString());
-        jtfGo.setText(tableMain.getModel().getValueAt(pos, 2).toString());
-        jtfTime.setText(tableMain.getModel().getValueAt(pos, 3).toString());
+        goTurnText.setText(tableMain.getModel().getValueAt(pos, 1).toString());
+        backTurnText.setText(tableMain.getModel().getValueAt(pos, 2).toString());
+        timeTravelText.setText(tableMain.getModel().getValueAt(pos, 3).toString());
+        busStopNumText.setText(tableMain.getModel().getValueAt(pos, 4).toString());
+        startPointText.setText(tableMain.getModel().getValueAt(pos, 5).toString());
+        breakTimeText.setText(tableMain.getModel().getValueAt(pos, 6).toString());
+        costText.setText(tableMain.getModel().getValueAt(pos, 7).toString());
+        
+        jbtAdd.setEnabled(false);
+        jbtDel.setEnabled(true);
+        jbtFix.setEnabled(true);
         
     }//GEN-LAST:event_tableMainMouseClicked
 
@@ -451,13 +753,92 @@ public class QLChuyen extends javax.swing.JFrame {
             int pos= tableMain.getSelectedRow();
             String data= tableMain.getModel().getValueAt(pos, 0).toString();
             
+            if(goTurnText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tuyến đường lượt đi");
+            goTurnText.requestFocus();
+            return;
+        }else if(backTurnText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tuyến đường lượt về");
+            backTurnText.requestFocus();
+            return;
+        }else if(timeTravelText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập thời gian di chuyển");
+            timeTravelText.requestFocus();
+            return;
+        }else if(startPointText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập điểm bắt đầu");
+            timeTravelText.requestFocus();
+            return;
+        }else if(busStopNumText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập số trạm");
+            timeTravelText.requestFocus();
+            return;
+        }else if(breakTimeText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập thời gian dãn cách");
+            timeTravelText.requestFocus();
+            return;
+        }else if(costText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập Chi phí");
+            timeTravelText.requestFocus();
+            return;
+        }
+        
+        
+        
+        if(!validUnicodeVn(goTurnText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Lượt đi chỉ được nhập ký tự và dấu phân cách \"-\"");
+            return;
+        }
+        
+        if(!validUnicodeVn(backTurnText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Lượt đi chỉ được nhập ký tự và dấu phân cách \"-\"");
+            return;
+        }
+        
+        
+        if(!isDigits(timeTravelText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Thời gian di chuyển chỉ được nhập số (h)");
+            return;
+        }
+        
+        if(!validUnicodeVn(startPointText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Điểm bắt đầu chỉ được nhập ký tự");
+            return;
+        }
+        
+        if(!isDigits(busStopNumText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Số trạm chỉ được nhập số");
+            return;
+        }
+        
+        if(!isDigits(breakTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Thời gian giãn cách chỉ được nhập số (p)");
+            return;
+        }
+        
+        if(!isDigits(costText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Chi phí chỉ được nhập số");
+            return;
+        }
+            
             try{
                 Connection connection = DBConnection.getConnection();
-                String query= "UPDATE ROUTE SET go_turn=? , back_turn= ?, time_travel=? WHERE route_id="+data;
+                String query= "UPDATE ROUTE SET go_turn=? , back_turn= ?, time_travel=?, start_point=?,bus_stop_num=?,time_break=?,gas_cost=? WHERE route_id="+data;
                 PreparedStatement ps = connection.prepareStatement(query);
-                ps.setString(1,jtfBack.getText());
-                ps.setString(2,jtfGo.getText());
-                ps.setString(3,jtfTime.getText());
+                ps.setString(1,goTurnText.getText());
+                ps.setString(2,backTurnText.getText());
+                ps.setString(3,timeTravelText.getText());
+                ps.setString(4,startPointText.getText());
+                ps.setString(5,busStopNumText.getText());
+                ps.setString(6,breakTimeText.getText());
+                ps.setString(7,costText.getText());
                 
                 ps.executeUpdate();
 //                DefaultTableModel model=  (DefaultTableModel) tableMain.getModel();
@@ -466,32 +847,55 @@ public class QLChuyen extends javax.swing.JFrame {
                 DBConnection.closeConnection(connection);
                 
                 JOptionPane.showMessageDialog(null, "Sửa thành công.");
+                goTurnText.setText("");
+                backTurnText.setText("");
+                timeTravelText.setText("");
+                startPointText.setText("");
+                busStopNumText.setText("");
+                breakTimeText.setText("");
+                costText.setText("");
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
             }
         
+            jbtAdd.setEnabled(true);
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        
     }//GEN-LAST:event_jbtFixActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        QLTime qlc= new QLTime();
-              qlc.setVisible(true);
-              this.dispose();
+        QLChuyen route = new QLChuyen();
+                route.setVisible(true);
+                route.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               route.setInfor(this.infor);
+               this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         QLVe qlc= new QLVe();
+          qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        Thongke qlc= new Thongke();
+        Statistic qlc= new Statistic();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         PhanCong qlc= new PhanCong();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -506,6 +910,77 @@ public class QLChuyen extends javax.swing.JFrame {
               // System.out.println(bus.infor);
                this.dispose();  
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void btResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResetActionPerformed
+        
+        goTurnText.setText("");
+        backTurnText.setText("");
+        timeTravelText.setText("");
+        startPointText.setText("");
+        busStopNumText.setText("");
+        breakTimeText.setText("");
+        costText.setText("");
+        
+        
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        jbtAdd.setEnabled(true);
+    }//GEN-LAST:event_btResetActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       EmployeeManagement emp = new EmployeeManagement();
+                
+                emp.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               emp.setInfor(this.infor);
+               emp.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       AccountManagement acc = new AccountManagement();
+                
+                acc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               acc.setInfor(this.infor);
+               acc.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        BusManagement bus = new BusManagement();
+                bus.setVisible(true);
+                bus.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               bus.setInfor(this.infor);
+               this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void timeTravelTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timeTravelTextKeyTyped
+       
+    }//GEN-LAST:event_timeTravelTextKeyTyped
+
+    private void busStopNumTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busStopNumTextKeyTyped
+
+    }//GEN-LAST:event_busStopNumTextKeyTyped
+
+    private void breakTimeTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_breakTimeTextKeyTyped
+       
+    }//GEN-LAST:event_breakTimeTextKeyTyped
+
+    private void costTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_costTextKeyTyped
+
+    }//GEN-LAST:event_costTextKeyTyped
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+                // TODO add your handling code here:
+                 QLTime qlc= new QLTime();
+         qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
+              qlc.setVisible(true);
+              this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     
     
@@ -548,6 +1023,12 @@ public class QLChuyen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField backTurnText;
+    private javax.swing.JTextField breakTimeText;
+    private javax.swing.JButton btReset;
+    private javax.swing.JTextField busStopNumText;
+    private javax.swing.JTextField costText;
+    private javax.swing.JTextField goTurnText;
     private javax.swing.JTextPane inforText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -559,18 +1040,23 @@ public class QLChuyen extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtAdd;
     private javax.swing.JButton jbtDel;
     private javax.swing.JButton jbtFix;
-    private javax.swing.JTextField jtfBack;
-    private javax.swing.JTextField jtfGo;
-    private javax.swing.JTextField jtfTime;
+    private javax.swing.JTextField startPointText;
     private javax.swing.JTable tableMain;
+    private javax.swing.JTextField timeTravelText;
     // End of variables declaration//GEN-END:variables
 }

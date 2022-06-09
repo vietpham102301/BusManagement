@@ -12,7 +12,9 @@ import javax.swing.JOptionPane;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
 import views.PhanCong;
 import views.QLChuyen;
@@ -34,6 +36,33 @@ public class BusManagement extends javax.swing.JFrame {
         this.infor = infor;
         this.inforText.setText(infor);
     }
+    
+    
+     private boolean isDigits(String s)
+    {
+        if(s== null)
+        {
+            return false;
+        }
+        try{
+            Float.parseFloat(s);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+     
+      public boolean validLicensePlate(String ls)
+     {
+         Pattern pattern;
+         //final String emailPattern = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$";
+         pattern= Pattern.compile("[A-Z0-9-]*");
+         
+         return pattern.matcher(ls).matches();
+     }
             
     public BusManagement() {
         initComponents();
@@ -41,6 +70,7 @@ public class BusManagement extends javax.swing.JFrame {
         
         deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
+        jButton2.requestFocus();
     }
     
           public ArrayList<Bus> getBusList(){
@@ -151,6 +181,8 @@ public class BusManagement extends javax.swing.JFrame {
         swMonthCombo = new javax.swing.JComboBox<>();
         swYearText = new javax.swing.JTextField();
         swDayText = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -221,6 +253,11 @@ public class BusManagement extends javax.swing.JFrame {
         });
 
         jButton2.setText("Quản lý xe bus");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Quản lý tuyến xe");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -258,9 +295,9 @@ public class BusManagement extends javax.swing.JFrame {
             .addGroup(inforPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                .addGap(34, 34, 34)
+                .addGap(25, 25, 25)
                 .addComponent(empmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -356,7 +393,7 @@ public class BusManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Mã tuyến", "Biển số xe", "Loại xe", "Ngày hoạt động", "Trạng thái"
+                "ID", "Mã tuyến", "Biển số xe", "Loại xe", "Ngày hoạt động", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -383,57 +420,74 @@ public class BusManagement extends javax.swing.JFrame {
 
         swMonthCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn tháng", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" }));
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Quản lý xe Bus");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(45, 50, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ResetButton)
-                            .addComponent(licensePlateText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(routeIdText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(165, 165, 165)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(45, 50, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                                        .addGap(194, 194, 194))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(busTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(182, 182, 182)))
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(statusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ResetButton)
+                                    .addComponent(licensePlateText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(routeIdText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(165, 165, 165)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+                                                .addGap(194, 194, 194))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(busTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(182, 182, 182)))
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(statusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(swDayText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(swMonthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(swYearText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(swDayText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(swMonthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(swYearText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13)))
+                        .addGap(7, 7, 7)
+                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)))
-                .addGap(7, 7, 7)
-                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(363, 363, 363)
+                                .addComponent(jLabel17))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(329, 329, 329)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -453,7 +507,7 @@ public class BusManagement extends javax.swing.JFrame {
                     .addComponent(swYearText, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(swDayText, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(swMonthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -476,9 +530,9 @@ public class BusManagement extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
         );
 
         pack();
@@ -516,13 +570,56 @@ public class BusManagement extends javax.swing.JFrame {
         String routeId, busType, status, licensePlate, swDay, swYear;
         int swMonth;
         LocalDate swDate;
-        routeId = routeIdText.getText();
-        busType = busTypeCombo.getSelectedItem().toString();
-        status = statusCombo.getSelectedItem().toString();
-        licensePlate = licensePlateText.getText();
-        swDay = swDayText.getText();
+        routeId = routeIdText.getText().trim();
+        busType = busTypeCombo.getSelectedItem().toString().trim();
+        status = statusCombo.getSelectedItem().toString().trim();
+        licensePlate = licensePlateText.getText().trim();
+        swDay = swDayText.getText().trim();
+        swYear = swYearText.getText().trim();
         
-        swYear = swYearText.getText();
+        
+        if(routeId.equals("") || busType.equals("--Chọn loại xe--") || licensePlate.equals("") || swDay.equals("") || swYear.equals("") || swMonthCombo.getSelectedItem().toString().equals("--Chọn tháng--"))
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng điển vào tất cả các trường");
+            return;
+        }
+        
+        if(!isDigits(routeId))
+        {
+            JOptionPane.showMessageDialog(this, "Mã tuyến chỉ được nhập số");
+            return;
+        }
+        
+        if(!validLicensePlate(licensePlate))
+        {
+            JOptionPane.showMessageDialog(this, "Biển số xe chỉ nhận ký tự A-Z, 0-9 và \"-\"");
+            return;
+        }
+        
+        if(!isDigits(swYearText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Năm bắt đầu hoạt động chỉ được nhập \"số\" năm từ "+2000 +" đến " + Integer.toString(LocalDate.now().getYear()));
+            return;
+        }
+        else if(isDigits(swYearText.getText()))
+        {
+            if(Integer.parseInt(swYearText.getText()) < 2000 || Integer.parseInt(swYearText.getText()) > LocalDate.now().getYear())
+            {
+                System.out.println("run");
+                JOptionPane.showMessageDialog(this, "Năm bắt hoạt động đầu chỉ được nhập \"số\" năm từ "+2000 +" đến " + Integer.toString(LocalDate.now().getYear()));
+                return;                
+            }
+             
+        }
+        swYear = swYearText.getText().trim();
+        
+        
+        
+        
+        
+        
+        
+        
         if(status.equals("Hoạt động")){
             status = "1";
         }
@@ -575,6 +672,44 @@ public class BusManagement extends javax.swing.JFrame {
                 swMonth = 0;
                        
         }
+        
+        
+        YearMonth my2 = null;
+         if(swMonth !=0)
+        {
+            my2 = YearMonth.of(Integer.parseInt(swYear), swMonth);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng bắt đầu làm việc");
+            return;
+        }
+         
+          if(!isDigits(swDayText.getText()))
+        {
+           JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc chỉ được nhập số");
+           return;
+        }
+        else if(isDigits(swDayText.getText()))
+        {
+//            System.out.println("run");
+            //swDay =Integer.parseInt(swDayText.getText().trim());
+//            System.out.println(bDay);
+            //System.out.println(my.lengthOfMonth());
+            if((Integer.parseInt(swDayText.getText().trim()) < 1) || (Integer.parseInt(swDayText.getText().trim()) >my2.lengthOfMonth()))
+            {
+//                System.out.println("run2");
+                JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc hợp lệ trong tháng từ 1-"+Integer.toString(my2.lengthOfMonth()));
+                return;
+            }
+            
+                
+        }
+          
+        
+        
+        
+        
         swDate = LocalDate.of(Integer.parseInt(swYear), swMonth, Integer.parseInt(swDay));
         if(routeId.equals("") || busType.equals("") || status.equals("") || licensePlate.equals("") || swDay.equals("") || swMonth ==0 || swYear.equals(""))
         {
@@ -588,6 +723,27 @@ public class BusManagement extends javax.swing.JFrame {
                 String sql = "INSERT BUS"
                         + " OUTPUT INSERTED.bus_id"
                         + " VALUES(" +routeId+", '"+ licensePlate+"', N'"+ busType+"', '"+swDate+"', "+ Integer.parseInt(status)+")";
+                String checkValidRouteId = "SELECT * FROM ROUTE WHERE route_id= "+routeId;
+                String checkValidLS = "SELECT * FROM BUS WHERE license_plate= '"+licensePlate+"'";
+                
+                st = con.createStatement();
+                rs = st.executeQuery(checkValidRouteId);
+                        
+                if(!rs.next())
+                {
+                    JOptionPane.showMessageDialog(this, "Mã tuyến không tồn tại vui lòng kiểm tra lại");
+                    return;
+                }
+                
+                 st = con.createStatement();
+                rs = st.executeQuery(checkValidLS);
+                        
+                if(!rs.next())
+                {
+                    JOptionPane.showMessageDialog(this, "Biển số xe vừa nhập trùng với xe khác, vui lòng kiểm tra lại");
+                    return;
+                }
+                
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
                 rs.next();
@@ -605,7 +761,7 @@ public class BusManagement extends javax.swing.JFrame {
                 model.addRow(row);
                 JOptionPane.showMessageDialog(this, "Thêm thành công");
                 // done addButton tomorrow do delete and update and link frame
-                    busTable.clearSelection();
+                busTable.clearSelection();
                 routeIdText.setText("");
                 busTypeCombo.setSelectedItem("--Chọn loại xe--");
                 statusCombo.setSelectedItem("Hoạt động");
@@ -630,9 +786,25 @@ public class BusManagement extends javax.swing.JFrame {
         int row = busTable.getSelectedRow();
         String cell = busTable.getModel().getValueAt(row, 0).toString();
         String deleteQuery = "DELETE FROM BUS WHERE bus_id= "+cell;
+        String checkWork ="SELECT * FROM WORK WHERE bus_id= "+cell;
         Connection con = establishCon();
         Statement st =null;
+        ResultSet rs;
+        
+        int result= JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?");
+        if(result==0)
+        {
         try{
+            
+            st = con.createStatement();
+            rs = st.executeQuery(checkWork);
+            if(rs.next())
+            {
+                JOptionPane.showMessageDialog(this, "Xe này đã được phân công không thể xóa");
+                return;
+            }
+            
+            
             st = con.createStatement();
             st.executeUpdate(deleteQuery);
             JOptionPane.showMessageDialog(this, "Xóa thành công");
@@ -647,6 +819,7 @@ public class BusManagement extends javax.swing.JFrame {
         swYearText.setText("");
         deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
+        addButton.setEnabled(true);
          
         }
         catch(Exception e){
@@ -675,6 +848,8 @@ public class BusManagement extends javax.swing.JFrame {
                 }
             }
         }
+        }
+        
 
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -689,9 +864,53 @@ public class BusManagement extends javax.swing.JFrame {
             int status;
             LocalDate swDate;
             
-            routeId = routeIdText.getText();
-            licensePlate = licensePlateText.getText();
-            busType = busTypeCombo.getSelectedItem().toString();
+            routeId = routeIdText.getText().trim();
+            licensePlate = licensePlateText.getText().trim();
+            busType = busTypeCombo.getSelectedItem().toString().trim();
+            
+            
+            if(routeId.equals("") ||  licensePlate.equals("") || swDayText.getText().equals("") || swYearText.getText().equals("") )
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng điển vào tất cả các trường");
+            return;
+        }
+            
+          if(busType.equals("--Chọn loại xe--"))
+          {
+              JOptionPane.showMessageDialog(this, "Vui lòng chọn loại xe");
+          }
+        
+        if(!isDigits(routeId))
+        {
+            JOptionPane.showMessageDialog(this, "Mã tuyến chỉ được nhập số");
+            return;
+        }
+        
+        if(!validLicensePlate(licensePlate))
+        {
+            JOptionPane.showMessageDialog(this, "Biển số xe chỉ nhận ký tự A-Z, 0-9 và \"-\"");
+            return;
+        }
+        
+        if(!isDigits(swYearText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Năm bắt đầu hoạt động chỉ được nhập \"số\" năm từ "+2000 +" đến " + Integer.toString(LocalDate.now().getYear()));
+            return;
+        }
+        else if(isDigits(swYearText.getText()))
+        {
+            if(Integer.parseInt(swYearText.getText()) < 2000 || Integer.parseInt(swYearText.getText()) > LocalDate.now().getYear())
+            {
+                System.out.println("run");
+                JOptionPane.showMessageDialog(this, "Năm bắt đầu làm việc chỉ được nhập \"số\" năm từ "+2000 +" đến " + Integer.toString(LocalDate.now().getYear()));
+                return;                
+            }
+             
+        }
+        
+            
+            
+            
             if(statusCombo.getSelectedItem().toString().equals("Hoạt động"))
             {
                 status = 1;
@@ -703,7 +922,7 @@ public class BusManagement extends javax.swing.JFrame {
             else{
                 status = 5;
             }
-            day = Integer.parseInt(swDayText.getText());
+            
             switch (swMonthCombo.getSelectedItem().toString())
        {
             case "Tháng 1":
@@ -748,13 +967,44 @@ public class BusManagement extends javax.swing.JFrame {
         }
             
             year = Integer.parseInt(swYearText.getText());
+            
+            YearMonth my2 = null;
+         if(swMonth !=0)
+        {
+            my2 = YearMonth.of(year, swMonth);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tháng bắt đầu làm việc");
+            return;
+        }
+         
+          if(!isDigits(swDayText.getText()))
+        {
+           JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc chỉ được nhập số");
+           return;
+        }
+        else if(isDigits(swDayText.getText()))
+        {
+//            System.out.println("run");
+            //swDay =Integer.parseInt(swDayText.getText().trim());
+//            System.out.println(bDay);
+            //System.out.println(my.lengthOfMonth());
+            if((Integer.parseInt(swDayText.getText().trim()) < 1) || (Integer.parseInt(swDayText.getText().trim()) >my2.lengthOfMonth()))
+            {
+//                System.out.println("run2");
+                JOptionPane.showMessageDialog(this, "Ngày bắt đầu làm việc hợp lệ trong tháng từ 1-"+Integer.toString(my2.lengthOfMonth()));
+                return;
+            }
+            
+                
+        }
+            
+            
+            day = Integer.parseInt(swDayText.getText());
             swDate = LocalDate.of(year, swMonth, day);
             
-            model.setValueAt(routeId, selectedRow, 1);
-            model.setValueAt(licensePlate, selectedRow, 2);
-            model.setValueAt(swDate, selectedRow, 4);
-            model.setValueAt(busType, selectedRow, 3);
-            model.setValueAt(status, selectedRow, 5);
+            
             
             Connection con = establishCon();
             Statement st;
@@ -765,6 +1015,11 @@ public class BusManagement extends javax.swing.JFrame {
                         + "' WHERE bus_id =" +busId; 
                 st = con.createStatement();
                 st.executeUpdate(updateSql);
+                model.setValueAt(routeId, selectedRow, 1);
+            model.setValueAt(licensePlate, selectedRow, 2);
+            model.setValueAt(swDate, selectedRow, 4);
+            model.setValueAt(busType, selectedRow, 3);
+            model.setValueAt(status, selectedRow, 5);
                 JOptionPane.showMessageDialog(this, "Sửa thành công");
                 routeIdText.setText("");
         busTypeCombo.setSelectedItem("--Chọn loại xe--");
@@ -775,11 +1030,13 @@ public class BusManagement extends javax.swing.JFrame {
         swYearText.setText("");
         deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
+        addButton.setEnabled(true);
                 
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Biển số xe bị trùng với xe khác vui lòng kiểm tra lại");
+                return;
             }
         }
 
@@ -787,6 +1044,7 @@ public class BusManagement extends javax.swing.JFrame {
 
     private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed
         // TODO add your handling code here:
+        addButton.setEnabled(true);
         busTable.clearSelection();
         routeIdText.setText("");
         busTypeCombo.setSelectedItem("--Chọn loại xe--");
@@ -805,7 +1063,8 @@ public class BusManagement extends javax.swing.JFrame {
 
     private void busTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_busTableMouseClicked
         // TODO add your handling code here:
-         int selectedRow = busTable.getSelectedRow();
+        addButton.setEnabled(false);
+        int selectedRow = busTable.getSelectedRow();
          
         DefaultTableModel dfModel = (DefaultTableModel) busTable.getModel();
         routeIdText.setText(dfModel.getValueAt(selectedRow, 1).toString());
@@ -864,8 +1123,19 @@ public class BusManagement extends javax.swing.JFrame {
                        
         }
         swMonthCombo.setSelectedItem(swDateDecompose[1]);
+        String status;
         
-        statusCombo.setSelectedItem(dfModel.getValueAt(selectedRow, 5).toString());
+        switch(dfModel.getValueAt(selectedRow, 5).toString()){
+            case "1":
+                status = "Hoạt động";
+                break;
+            case "0":
+                status = "Không hoạt động";
+            default:
+                status = "Đang sửa chữa";
+        }
+        
+        statusCombo.setSelectedItem(status);
     }//GEN-LAST:event_busTableMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -890,24 +1160,24 @@ public class BusManagement extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        
-         QLTime time = new QLTime();
-                time.setVisible(true);
-                time.setLocationRelativeTo(null);
-               // System.out.println(this.infor);
-               time.setInfor(this.infor);
-               this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        
-        QLChuyen route = new QLChuyen();
+         QLChuyen route = new QLChuyen();
                 route.setVisible(true);
                 route.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                route.setInfor(this.infor);
                this.dispose();
+         
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        QLTime time = new QLTime();
+                time.setVisible(true);
+                time.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               time.setInfor(this.infor);
+               this.dispose();
+       
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -924,13 +1194,17 @@ public class BusManagement extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         
-        Thongke st = new Thongke();
+        Statistic st = new Statistic();
                 st.setVisible(true);
                 st.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                st.setInfor(this.infor);
                this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -989,6 +1263,7 @@ public class BusManagement extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -997,6 +1272,7 @@ public class BusManagement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField licensePlateText;
     private javax.swing.JTextField routeIdText;
     private javax.swing.JComboBox<String> statusCombo;

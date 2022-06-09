@@ -4,7 +4,7 @@
  */
 package views;
 
-import busmanagement.Login;
+import busmanagement.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,9 +33,44 @@ public class QLVe extends javax.swing.JFrame {
         this.infor = infor;
         this.inforText.setText(infor);
     }
+       
+       
+       public boolean validTicketName(String name)
+    {
+        Pattern pattern;
+        final String namePattern = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s|_]+$";
+        
+        pattern = Pattern.compile(namePattern);
+        return pattern.matcher(name).matches();
+    }
+       
+       
+     
+       
+       
+       private boolean isDigits(String s)
+    {
+        if(s== null)
+        {
+            return false;
+        }
+        try{
+            Float.parseFloat(s);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+       
+       
+       
     
     public QLVe() {
         initComponents();
+        jButton7.requestFocus();
     }
 
     /**
@@ -69,6 +105,9 @@ public class QLVe extends javax.swing.JFrame {
         jbtFix = new javax.swing.JButton();
         jbtAdd = new javax.swing.JButton();
         jtfType = new javax.swing.JTextField();
+        btReset = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -76,6 +115,11 @@ public class QLVe extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(256, 720));
 
         jButton1.setText(" Quản lý nhân viên");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Phân công");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -128,47 +172,61 @@ public class QLVe extends javax.swing.JFrame {
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jButton7.setText("Quản lý vé");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Quản lý tài khoản");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Quản lý xe bus");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16))))
+                        .addComponent(jScrollPane4))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(13, 13, 13)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -216,16 +274,21 @@ public class QLVe extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tableMain);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Loại vé");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Loại vé:");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Giá tiền");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Giá tiền:");
 
         jtfFare.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jtfFare.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfFareActionPerformed(evt);
+            }
+        });
+        jtfFare.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfFareKeyTyped(evt);
             }
         });
 
@@ -257,14 +320,23 @@ public class QLVe extends javax.swing.JFrame {
             }
         });
 
+        btReset.setText("Đặt lại");
+        btReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(721, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btReset, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,33 +345,37 @@ public class QLVe extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(243, 243, 243)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(185, 185, 185)
+                            .addComponent(jLabel2)
+                            .addComponent(jtfType, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(80, 80, 80)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfFare, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel3)
+                            .addComponent(jtfFare, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 413, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(66, 66, 66)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jtfFare, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfType))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfFare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtFix, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btReset, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
         );
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Quản lý vé xe");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -307,11 +383,25 @@ public class QLVe extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel17)
+                                .addGap(39, 39, 39))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(408, 408, 408))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane2)
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,9 +410,13 @@ public class QLVe extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -359,6 +453,9 @@ public class QLVe extends javax.swing.JFrame {
     
     
     private boolean checkType(){
+        
+        
+        
         try{
             Connection connection = DBConnection.getConnection();
             String query= "SELECT * FROM dbo.TICKET WHERE ticket_type = ?";
@@ -375,9 +472,30 @@ public class QLVe extends javax.swing.JFrame {
         return false;
     }
     
+    private boolean checkID(){
+        
+        int pos= tableMain.getSelectedRow();
+        String id= tableMain.getModel().getValueAt(pos, 0).toString();
+        
+        try{
+            Connection connection = DBConnection.getConnection();
+            String query= "SELECT ticket_id FROM dbo.BUS_TICKET WHERE ticket_id = ? and YEAR(work_day) = YEAR(getdate())";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, id);
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     
     private void jtfFareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfFareActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jtfFareActionPerformed
 
     private void jbtFixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtFixActionPerformed
@@ -386,10 +504,20 @@ public class QLVe extends javax.swing.JFrame {
             String data= tableMain.getModel().getValueAt(pos, 0).toString();
             //System.out.println(data);
             
-        if(checkType()== true){
-            JOptionPane.showMessageDialog(null, "Loại vé đã tồn tại.");
-            jtfType.requestFocus();
-        }else{
+        if(checkID()== true){
+                jtfType.setText("");
+                jtfFare.setText("");
+            JOptionPane.showMessageDialog(null, "Vé này đã tồn tại thống kê trong năm nay nên không thể sửa");
+            jbtAdd.setEnabled(true);
+            
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+            tableMain.getSelectionModel().clearSelection();
+            return;
+            }
+            
+    
+       
             
             try{
                 Connection connection = DBConnection.getConnection();
@@ -402,12 +530,23 @@ public class QLVe extends javax.swing.JFrame {
 
                 showData();
                 DBConnection.closeConnection(connection);
-                
+                jtfType.setText("");
+                jtfFare.setText("");
                 JOptionPane.showMessageDialog(null, "Sửa thành công.");
+                jbtAdd.setEnabled(true);
+                jbtDel.setEnabled(false);
+                jbtFix.setEnabled(false);
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+                jtfType.setText("");
+                jtfFare.setText("");
+                 jbtAdd.setEnabled(true);
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
             }
-        }
+        
+        
+       
     }//GEN-LAST:event_jbtFixActionPerformed
 
     private void jbtDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDelActionPerformed
@@ -418,6 +557,12 @@ public class QLVe extends javax.swing.JFrame {
             int pos= tableMain.getSelectedRow();
             String data= tableMain.getModel().getValueAt(pos, 0).toString();
             
+            if(checkID()== true){
+                jtfType.setText("");
+                jtfFare.setText("");
+            JOptionPane.showMessageDialog(null, "Vé này đã tồn tại trong thống kê");
+            return;
+            }else{
             
             try{
                 Connection connection = DBConnection.getConnection();
@@ -427,21 +572,28 @@ public class QLVe extends javax.swing.JFrame {
                 ps.executeUpdate();
                 showData();
                 DBConnection.closeConnection(connection);
-                
+                jtfType.setText("");
+                jtfFare.setText("");
                 JOptionPane.showMessageDialog(null, "Xóa thành công.");
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        }else{
+            jtfType.setText("");
+                jtfFare.setText("");
+                tableMain.getSelectionModel().clearSelection();
+        }
+        
+        jbtAdd.setEnabled(true);
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
     }//GEN-LAST:event_jbtDelActionPerformed
 
     private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
         
         
-//        if(jtfID.getText().equals("")){
-//            JOptionPane.showMessageDialog(null, "ID Vé không được rỗng.");
-//            jtfID.requestFocus();
-//            return;
+
          if(jtfType.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Loại vé không được rỗng.");
             jtfType.requestFocus();
@@ -452,19 +604,29 @@ public class QLVe extends javax.swing.JFrame {
             return;
         }
         
-//        if(checkType()== true){
-//            JOptionPane.showMessageDialog(null, "Loại vé đã tồn tại.");
-//            jtfID.requestFocus();
-      
-        
+         if(!validTicketName(jtfType.getText()))
+         {
+             JOptionPane.showMessageDialog(this, "Tên loại vé chỉ chứa ký tự và khoảng trắng");
+             return;
+         }
+         
+         if(!isDigits(jtfFare.getText()))
+         {
+             JOptionPane.showMessageDialog(this,"Giá vé chỉ được nhập số");
+             return;
+         }
+         
+         
+         int fare= Integer.parseInt(jtfFare.getText());
+       
             try{
                 Connection connection = DBConnection.getConnection();
                 String query= "INSERT INTO dbo.TICKET( ticket_type, fare)"
-                        + "VALUES(?,?)";
+                        + "VALUES(?,"+fare+")";
                 PreparedStatement ps = connection.prepareStatement(query);
                 //ps.setString(1,jtfID.getText());
                 ps.setString(1,jtfType.getText());
-                ps.setString(2,jtfFare.getText());
+                //ps.setString(2,fare);
                 
                 ps.execute();
                 showData();
@@ -479,12 +641,15 @@ public class QLVe extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
             }
-                
+        
         
     }//GEN-LAST:event_jbtAddActionPerformed
 
     private void tableMainAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tableMainAncestorAdded
         showData();
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        
     }//GEN-LAST:event_tableMainAncestorAdded
 
     private void jtfTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTypeActionPerformed
@@ -498,28 +663,44 @@ public class QLVe extends javax.swing.JFrame {
         jtfType.setText(tableMain.getModel().getValueAt(pos, 1).toString());
         jtfFare.setText(tableMain.getModel().getValueAt(pos, 2).toString());
         
+        jbtDel.setEnabled(true);
+        jbtFix.setEnabled(true);
+        jbtAdd.setEnabled(false);
+        
     }//GEN-LAST:event_tableMainMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         PhanCong qlc= new PhanCong();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        QLChuyen qlc= new QLChuyen();
+         QLTime qlc= new QLTime();
+         qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        QLTime qlc= new QLTime();
+        QLChuyen qlc= new QLChuyen();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        Thongke qlc= new Thongke();
+        Statistic qlc= new Statistic();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
@@ -534,6 +715,54 @@ public class QLVe extends javax.swing.JFrame {
               // System.out.println(bus.infor);
                this.dispose();  
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void btResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResetActionPerformed
+        
+                
+                jtfType.setText("");
+                jtfFare.setText("");
+                jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        jbtAdd.setEnabled(true);
+    }//GEN-LAST:event_btResetActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       EmployeeManagement emp = new EmployeeManagement();
+                
+                emp.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               emp.setInfor(this.infor);
+               emp.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        AccountManagement acc = new AccountManagement();
+                
+                acc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               acc.setInfor(this.infor);
+               acc.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+         BusManagement bus = new BusManagement();
+                
+                bus.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               bus.setInfor(this.infor);
+               bus.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jtfFareKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfFareKeyTyped
+      
+    }//GEN-LAST:event_jtfFareKeyTyped
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -574,6 +803,7 @@ public class QLVe extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btReset;
     private javax.swing.JTextPane inforText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -585,12 +815,14 @@ public class QLVe extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtAdd;
     private javax.swing.JButton jbtDel;
     private javax.swing.JButton jbtFix;

@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -8,13 +8,17 @@ import busmanagement.AccountManagement;
 import busmanagement.BusManagement;
 import busmanagement.EmployeeManagement;
 import busmanagement.Login;
+import busmanagement.Statistic;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +47,9 @@ public class PhanCong extends javax.swing.JFrame {
     
     
     public PhanCong() {
+        
         initComponents();
+        jButton4.requestFocus();
     }
 
     /**
@@ -71,20 +77,25 @@ public class PhanCong extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableMain = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jbtDel = new javax.swing.JButton();
-        jbtAdd = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        cbbBus = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        btChosse = new javax.swing.JButton();
         cbbTX = new javax.swing.JComboBox<>();
         cbbTime = new javax.swing.JComboBox<>();
         cbbPX = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        cbbDay = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        cbbM = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        cbbYear = new javax.swing.JComboBox<>();
+        jbtDel = new javax.swing.JButton();
+        jbtAdd = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        cbbDay = new javax.swing.JComboBox<>();
+        cbbBus = new javax.swing.JComboBox<>();
+        jtfYear = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -260,11 +271,54 @@ public class PhanCong extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tableMain);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Bus ");
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Tài xế");
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel9.setText("Phân Công");
+
+        btChosse.setText("Chọn");
+        btChosse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btChosseActionPerformed(evt);
+            }
+        });
+
+        cbbTX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbTXActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Phụ xe:");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setText("Tháng:");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Bus:");
+
+        cbbM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", " " }));
+        cbbM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbMActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Tài xế:");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Năm:");
 
         jbtDel.setText("Xóa");
         jbtDel.addActionListener(new java.awt.event.ActionListener() {
@@ -280,119 +334,31 @@ public class PhanCong extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Tuyến");
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Ngày:");
 
-        cbbBus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "null" }));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Chuyến số:");
 
-        cbbTX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbbTX.addActionListener(new java.awt.event.ActionListener() {
+        cbbDay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cbbBus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbBusItemStateChanged(evt);
+            }
+        });
+        cbbBus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbbBusMouseClicked(evt);
+            }
+        });
+        cbbBus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbTXActionPerformed(evt);
+                cbbBusActionPerformed(evt);
             }
         });
 
-        cbbTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cbbPX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setText("Phụ xe");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("Tháng");
-
-        cbbDay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", " " }));
-        cbbDay.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbDayActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel7.setText("Năm");
-
-        cbbYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040", " " }));
-        cbbYear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbYearActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cbbBus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbbTX, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbbPX, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(46, 46, 46)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbbTime, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbbDay, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                            .addComponent(cbbYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(105, 105, 105))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbbDay))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(cbbPX, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbTX, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbBus, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbbYear))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbbTime, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29))
-        );
+        jtfYear.setText("2022");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -400,23 +366,116 @@ public class PhanCong extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1016, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbbBus, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(38, 38, 38)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(cbbTX, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(31, 31, 31))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(137, 137, 137)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbbPX, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(48, 48, 48)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(cbbTime, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(37, 37, 37))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jtfYear)
+                                                .addGap(50, 50, 50)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(cbbM, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(41, 41, 41)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(cbbDay, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(64, 64, 64)
+                                                        .addComponent(btChosse, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(289, 289, 289))
+                            .addComponent(jScrollPane2))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(449, 449, 449)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbbM)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbbDay, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btChosse, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jtfYear))
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbbPX, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbbTX, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbbTime, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbbBus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(68, 68, 68))))
         );
 
         pack();
@@ -426,9 +485,6 @@ public class PhanCong extends javax.swing.JFrame {
     Date date= new Date();
     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
     
-    
-    
-   
     
     private void showData(){
         try{
@@ -462,6 +518,33 @@ public class PhanCong extends javax.swing.JFrame {
         }
     }
     
+    
+//    private void showBusEMP(){
+//        try{
+//            //tableMain.removeAll();
+//            String[] arr = {"Bus ID","ID nhân viên"};
+//            DefaultTableModel model=  new DefaultTableModel(arr,0);
+//            
+//            Connection connection = DBConnection.getConnection();
+//            String query= "SELECT * FROM dbo.Bus_EMP " ;
+//            PreparedStatement ps = connection.prepareStatement(query);
+//            ResultSet rs= ps.executeQuery();
+//            while(rs.next()){
+//                Vector vt= new Vector();
+//                vt.add(rs.getString("bus_id"));
+//                vt.add(rs.getString("emp_id"));
+// 
+//                model.addRow(vt);
+//    
+//        }
+//            DBConnection.closeConnection(connection);
+//            jtbBusEMP.setModel(model);  
+//        }catch(SQLException ex){
+//            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    
+    
     public class ComboItem {
 
     private Object value;
@@ -487,30 +570,34 @@ public class PhanCong extends javax.swing.JFrame {
 }
     
     
+ 
     
-    private void fillComboboxbus(){
+    
+    private void fillComboboxDay(){
         
+        
+        String m= cbbM.getSelectedItem().toString();
+        //String year= cbbYear.getSelectedItem().toString();
+        String year1= jtfYear.getText();
      
      try{      
         Connection connection = DBConnection.getConnection();
-        String query= "{call sp_WorkBus(?,?) }";
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, cbbDay.getSelectedItem().toString());
-        ps.setString(2, cbbYear.getSelectedItem().toString());
+        String query= "EXEC sp_getDay @month= '"+m+"' ,"+"@Year= '"+year1+"' ";
+        PreparedStatement ps = connection.prepareCall(query);
+//        PreparedStatement ps = connection.prepareStatement(query);
+//        ps.setString(1, cbbM.getSelectedItem().toString());
+//        ps.setString(2, cbbYear.getSelectedItem().toString());
         ps.executeQuery();
         ResultSet rs= ps.executeQuery();
         
-        DefaultComboBoxModel cbb= (DefaultComboBoxModel) cbbBus.getModel();
+        DefaultComboBoxModel cbb= (DefaultComboBoxModel) cbbDay.getModel();
         cbb.removeAllElements();
-        
 
         while(rs.next()){
-            int idbus= rs.getInt("bus_id");
-            String number= rs.getString("route_id");
+
+            String days= rs.getString("day");
             
-            ComboItem mycbb= new ComboItem(idbus, number);
-            
-            cbb.addElement(mycbb);
+            cbb.addElement(days);
             
         }
         
@@ -519,20 +606,63 @@ public class PhanCong extends javax.swing.JFrame {
     }
     }
     
+    private void fillComboboxbus(){
+        
+        
+        String day= cbbDay.getSelectedItem().toString();
+        String m= cbbM.getSelectedItem().toString();
+        //String year= cbbYear.getSelectedItem().toString();
+        String year1= jtfYear.getText();
+     
+     try{      
+        Connection connection = DBConnection.getConnection();
+        String query= "EXEC sp_WorkBus @day= '"+ day+ "', @m= '"+m+"', @year= '"+year1+"' ";
+        PreparedStatement ps = connection.prepareCall(query);
+//        ps.setString(1, cbbDay.getSelectedItem().toString());
+//        ps.setString(2, cbbYear.getSelectedItem().toString());
+        ps.executeQuery();
+        ResultSet rs= ps.executeQuery();
+        
+        DefaultComboBoxModel cbb= (DefaultComboBoxModel) cbbBus.getModel();
+        cbb.removeAllElements();
+        cbb.addElement("--Chọn bus--");
+    
+        while(rs.next()){
+            int idbus= rs.getInt("bus_id");
+            String number= rs.getString("info");
+            
+            ComboItem mycbb= new ComboItem(idbus, number);
+            
+            cbb.addElement(mycbb);
+            
+        }
+        
+       
+       
+    }catch(SQLException ex){
+        Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+    }
+     
+     
+     
+    }
+    
     private void fillComboboxTX(){
         
     
      try{      
         Connection connection = DBConnection.getConnection();
-        String query= "{call sp_WorkEMP1(?,?)}";
+        String query= "{call sp_WorkEMP1(?,?,?)}";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, cbbDay.getSelectedItem().toString());
-        ps.setString(2, cbbYear.getSelectedItem().toString());
+        ps.setString(2, cbbM.getSelectedItem().toString());
+        ps.setString(3, jtfYear.getText());
         ps.executeQuery();
         ResultSet rs= ps.executeQuery();
         
         DefaultComboBoxModel cbb= (DefaultComboBoxModel) cbbTX.getModel();
         cbb.removeAllElements();
+        cbb.addElement("--Chọn tài xế--");
         
         while(rs.next()){
             int idbus= rs.getInt("emp_id");
@@ -555,16 +685,17 @@ public class PhanCong extends javax.swing.JFrame {
     
      try{      
         Connection connection = DBConnection.getConnection();
-        String query= "{call sp_WorkEMP2(?,?)}";
+        String query= "{call sp_WorkEMP2(?,?,?)}";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, cbbDay.getSelectedItem().toString());
-        ps.setString(2, cbbYear.getSelectedItem().toString());
+        ps.setString(2, cbbM.getSelectedItem().toString());
+        ps.setString(3, jtfYear.getText());
         ps.executeQuery();
         ResultSet rs= ps.executeQuery();
         
         DefaultComboBoxModel cbb= (DefaultComboBoxModel) cbbPX.getModel();
         cbb.removeAllElements();
-        
+        cbb.addElement("--Chọn phụ xe--");
         while(rs.next()){
             int idbus= rs.getInt("emp_id");
             String name= rs.getString("fullname");
@@ -581,37 +712,121 @@ public class PhanCong extends javax.swing.JFrame {
     }
     }
     
-    private void fillComboboxTIME(){
-        
-    
-     try{      
-        Connection connection = DBConnection.getConnection();
-        String query= "SELECT * FROM TIME";
-        PreparedStatement ps = connection.prepareStatement(query);
-        ResultSet rs= ps.executeQuery();
-        
-        DefaultComboBoxModel cbb= (DefaultComboBoxModel) cbbTime.getModel();
-        cbb.removeAllElements();
-        
-        while(rs.next()){
-            String idbus= rs.getString("time_id");
-            //MyCombobox mycbb= new MyCombobox(idbus);
-            cbb.addElement(idbus);
+    private void fillComboboxTIME() {
+
+        int busID = 0;
+
+        if (!(cbbBus.getSelectedItem() == "--Chọn bus--")) {
+            ComboItem nb = (ComboItem) cbbBus.getSelectedItem();
+            if(!(nb == null))
+            {
+                busID = nb.getID();
+
+            }
+            else{
+                return;
+            }   
         }
         
-    }catch(SQLException ex){
-        Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        
+        
+        
+        
+        try {
+            Connection connection = DBConnection.getConnection();
+            //String query = "EXEC sp_WorkTime @busid= " + busID + " ";
+            String query = " EXEC sp_WorkTime @busid=  " + busID + " ";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            DefaultComboBoxModel cbb = (DefaultComboBoxModel) cbbTime.getModel();
+            cbb.removeAllElements();
+            cbb.addElement("--Chọn chuyến--");
+            while (rs.next()) {
+                int id = rs.getInt("time_id");
+                String info = rs.getString("info");
+
+                ComboItem mycbb = new ComboItem(id, info);
+
+                cbb.addElement(mycbb);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    private boolean checkBusEMP1(){
+    
+        ComboItem nb= (ComboItem) cbbBus.getSelectedItem();
+        int busID = nb.getID();
+
+        ComboItem tx= (ComboItem) cbbTX.getSelectedItem();
+        int txID = tx.getID();
+
+  
+        
+        try{
+            Connection connection = DBConnection.getConnection();
+            String query= "SELECT * FROM dbo.BUS_EMP WHERE bus_id ="+ busID+"AND emp_id=" + txID;
+            PreparedStatement ps = connection.prepareStatement(query);
+            //ps.setString(1, busID);
+            //ps.setString(2, txID);
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
+    
+     private boolean checkBusEMP2(){
+    
+        ComboItem nb= (ComboItem) cbbBus.getSelectedItem();
+        int busID = nb.getID();
+
+        ComboItem px= (ComboItem) cbbPX.getSelectedItem();
+        int pxID = px.getID();
+         
+        try{
+            Connection connection = DBConnection.getConnection();
+            String query= "SELECT * FROM dbo.BUS_EMP WHERE bus_id ="+ busID+"AND emp_id="+pxID;
+            PreparedStatement ps = connection.prepareStatement(query);
+//            ps.setString(1, busID);
+//            ps.setString(2, pxID);
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     
     
     private void tableMainAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tableMainAncestorAdded
         showData();
-        //showBusEMP();
-        fillComboboxbus();
-        fillComboboxTIME();
-        fillComboboxPX();
-        fillComboboxTX();
+        
+        
+       Calendar cal = Calendar.getInstance();
+       int year_now = cal.get(Calendar.YEAR);
+       
+       jtfYear.setText(String.valueOf(year_now));
+ 
+        fillComboboxDay();
+
+        jbtAdd.setEnabled(false);
+        jbtDel.setEnabled(false);
+        
+       
+        
+        
         
     }//GEN-LAST:event_tableMainAncestorAdded
 
@@ -622,121 +837,20 @@ public class PhanCong extends javax.swing.JFrame {
         cbbBus.setSelectedItem(tableMain.getModel().getValueAt(pos, 0).toString());
         cbbTX.setSelectedItem(tableMain.getModel().getValueAt(pos, 2).toString());
         cbbTime.setSelectedItem(tableMain.getModel().getValueAt(pos, 5).toString());
+        
+       
+        jbtDel.setEnabled(true);
     }//GEN-LAST:event_tableMainMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
        
     }//GEN-LAST:event_formMouseClicked
 
-    private void cbbDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbDayActionPerformed
-        fillComboboxbus();
-        fillComboboxTX();
-        fillComboboxPX();
-    }//GEN-LAST:event_cbbDayActionPerformed
-
-    private void cbbTXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTXActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbbTXActionPerformed
-
-    private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
-
-        ComboItem nb= (ComboItem) cbbBus.getSelectedItem();
-        int busID = nb.getID();
-
-        ComboItem tx= (ComboItem) cbbTX.getSelectedItem();
-        int txID = tx.getID();
-
-        ComboItem px= (ComboItem) cbbPX.getSelectedItem();
-        int pxID = px.getID();
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, Integer.parseInt(cbbDay.getSelectedItem().toString()) -1 );
-        cal.set(Calendar.YEAR, Integer.parseInt(cbbYear.getSelectedItem().toString()));
-        date= cal.getTime();
-
-
-        try{
-
-            Connection connection = DBConnection.getConnection();
-            String query= "INSERT INTO dbo.WORK( bus_id, emp_id, time_id, work_day)"
-            + "VALUES(?,?,?,?)";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1,busID);
-            ps.setInt(2,pxID);
-            ps.setString(3,cbbTime.getSelectedItem().toString());
-            ps.setDate(4, new java.sql.Date(date.getTime()));
-
-            ps.execute();
-
-            String query3= "INSERT INTO dbo.WORK( bus_id, emp_id, time_id, work_day)"
-            + "VALUES(?,?,?,?)";
-            PreparedStatement ps3 = connection.prepareStatement(query3);
-            ps3.setInt(1,busID);
-            ps3.setInt(2,txID);
-            ps3.setString(3,cbbTime.getSelectedItem().toString());
-            ps3.setDate(4, new java.sql.Date(date.getTime()));
-
-            ps3.execute();
-
-            //showBusEMP();
-            showData();
-            DBConnection.closeConnection(connection);
-
-            JOptionPane.showMessageDialog(null, "Phân công thành công.");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        fillComboboxbus();
-        fillComboboxTX();
-        fillComboboxPX();
-    }//GEN-LAST:event_jbtAddActionPerformed
-
-    private void jbtDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDelActionPerformed
-
-        int result= JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?");
-        if (result==0){
-
-            int pos= tableMain.getSelectedRow();
-            String bus= tableMain.getModel().getValueAt(pos, 0).toString();
-            String emp= tableMain.getModel().getValueAt(pos, 2).toString();
-            String time= tableMain.getModel().getValueAt(pos, 5).toString();
-            String day= tableMain.getModel().getValueAt(pos, 8).toString();
-
-            try{
-                Connection connection = DBConnection.getConnection();
-                String query= "DELETE FROM dbo.WORK WHERE bus_id= ? AND time_id=? AND work_day=?";
-                PreparedStatement ps = connection.prepareStatement(query);
-                ps.setString(1, bus);
-                //ps.setString(2, emp);
-                ps.setString(2, time);
-                ps.setString(3, day);
-
-                ps.executeUpdate();
-
-                showData();
-                DBConnection.closeConnection(connection);
-
-                JOptionPane.showMessageDialog(null, "Xóa thành công.");
-            } catch (SQLException ex) {
-                Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        fillComboboxbus();
-        fillComboboxTX();
-        fillComboboxPX();
-    }//GEN-LAST:event_jbtDelActionPerformed
-
-    private void cbbYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbYearActionPerformed
-        fillComboboxbus();
-        fillComboboxTX();
-        fillComboboxPX();
-    }//GEN-LAST:event_cbbYearActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        QLChuyen qlc= new QLChuyen();
-         qlc.setLocationRelativeTo(null);
+        
+                    QLTime qlc= new QLTime();
+       
+        qlc.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                qlc.setInfor(this.infor);
                     qlc.setVisible(true);
@@ -744,9 +858,8 @@ public class PhanCong extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       QLTime qlc= new QLTime();
-       
-        qlc.setLocationRelativeTo(null);
+            QLChuyen qlc= new QLChuyen();
+         qlc.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                qlc.setInfor(this.infor);
                     qlc.setVisible(true);
@@ -763,7 +876,7 @@ public class PhanCong extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        Thongke qlc= new Thongke();
+        Statistic qlc= new Statistic();
          qlc.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                qlc.setInfor(this.infor);
@@ -784,11 +897,12 @@ public class PhanCong extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         EmployeeManagement emp = new EmployeeManagement();
-                emp.setVisible(true);
+        EmployeeManagement emp = new EmployeeManagement();
+                
                 emp.setLocationRelativeTo(null);
                // System.out.println(this.infor);
                emp.setInfor(this.infor);
+               emp.setVisible(true);
                this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -815,6 +929,356 @@ public class PhanCong extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btChosseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btChosseActionPerformed
+       
+        
+        
+        
+       Calendar cal = Calendar.getInstance();
+       int year_now = cal.get(Calendar.YEAR);
+       int year= Integer.parseInt(jtfYear.getText());
+       
+       
+        
+       if (year > year_now + 1){
+           
+           JOptionPane.showMessageDialog(null, "Năm không được vượt quá số năm hiện tại +1!");
+           jtfYear.setText("");
+           return;
+           
+        } else if (year < year_now){
+            JOptionPane.showMessageDialog(null, "Năm không được nhỏ hơn năm hiện tại!");
+            jtfYear.setText("");
+           return;
+        }
+ 
+ 
+        Calendar cal1 = Calendar.getInstance();
+        cal1.set(Calendar.DAY_OF_MONTH, Integer.parseInt(cbbDay.getSelectedItem().toString()) );
+        cal1.set(Calendar.MONTH, Integer.parseInt(cbbM.getSelectedItem().toString()) -1 );
+        cal1.set(Calendar.YEAR, Integer.parseInt(jtfYear.getText()));
+        //date= cal1.getTime();
+        
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatted = format1.format(cal1.getTime());
+        
+        String daten= java.time.LocalDate.now().toString();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date1= null;
+        try {
+            date1 = sdf1.parse(formatted);
+        } catch (ParseException ex) {
+            Logger.getLogger(PhanCong.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Date date2= null;
+        try {
+            date2 = sdf1.parse(daten);
+        } catch (ParseException ex) {
+            Logger.getLogger(PhanCong.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+        int rs = date1.compareTo(date2);
+            
+            if (rs < 0 ){
+                JOptionPane.showMessageDialog(null, "Không được phân công ngày trong quá khứ!");
+                 jbtAdd.setEnabled(false);
+                return;
+            }
+       
+        fillComboboxbus();
+        
+        fillComboboxTX();
+        fillComboboxPX();
+        fillComboboxTIME();
+        
+        jbtAdd.setEnabled(true);
+        
+        
+
+    }//GEN-LAST:event_btChosseActionPerformed
+
+    private void cbbTXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTXActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbTXActionPerformed
+
+    private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
+
+        if(cbbBus.getSelectedItem() == "--Chọn bus--" ){
+           
+           JOptionPane.showMessageDialog(null, "Vui lòng chọn xe bus!");
+           return;
+           
+       }
+        
+        else if(cbbTX.getSelectedItem() == "--Chọn tài xế--" ){
+           
+           JOptionPane.showMessageDialog(null, "Vui lòng chọn tài xế!");
+           return;
+           
+       }
+        
+        else if(cbbPX.getSelectedItem() == "--Chọn phụ xe--" ){
+           
+           JOptionPane.showMessageDialog(null, "Vui lòng chọn phụ xe!");
+           return;
+           
+       }
+        
+        else if(cbbTime.getSelectedItem() == "--Chọn chuyến--" ){
+           
+           JOptionPane.showMessageDialog(null, "Vui lòng chọn chuyến!");
+           return;
+           
+       }
+        
+        ComboItem nb= (ComboItem) cbbBus.getSelectedItem();
+        int busID = nb.getID();
+        
+        
+
+        ComboItem tx= (ComboItem) cbbTX.getSelectedItem();
+        int txID = tx.getID();
+
+        
+        
+        ComboItem px= (ComboItem) cbbPX.getSelectedItem();
+        int pxID = px.getID();
+        
+        
+        
+        ComboItem time= (ComboItem) cbbTime.getSelectedItem();
+        int timeID = time.getID();
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(cbbDay.getSelectedItem().toString()) );
+        cal.set(Calendar.MONTH, Integer.parseInt(cbbM.getSelectedItem().toString()) -1 );
+        cal.set(Calendar.YEAR, Integer.parseInt(jtfYear.getText()));
+        date= cal.getTime();
+        
+       
+        
+        
+       
+       if(cbbTime.getSelectedIndex() == 0 ){
+           
+           JOptionPane.showMessageDialog(null, "Chuyến không được rỗng!");
+           return;
+       }
+        
+
+        if(checkBusEMP2()==true ){
+            try{
+                Connection connection = DBConnection.getConnection();
+                String query= "INSERT INTO dbo.WORK( bus_id, emp_id, time_id, work_day)"
+                + "VALUES(?,?,?,?)";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setInt(1,busID);
+                ps.setInt(2,pxID);
+                ps.setInt(3,timeID);
+                ps.setDate(4, new java.sql.Date(date.getTime()));
+
+                ps.execute();
+
+                showData();
+                //showBusEMP();
+                DBConnection.closeConnection(connection);
+
+                JOptionPane.showMessageDialog(null, "Phân công phụ xe thành công.");
+
+            }catch (SQLException ex) {
+                Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+
+            try{
+                 Connection connection = DBConnection.getConnection();
+                
+                String query1= "INSERT INTO dbo.BUS_EMP( bus_id, emp_id)"
+                + "VALUES(?,?)";
+                PreparedStatement ps1 = connection.prepareStatement(query1);
+                ps1.setInt(1,busID);
+                ps1.setInt(2,pxID);
+
+                ps1.execute();
+                
+               
+                String query= "INSERT INTO dbo.WORK( bus_id, emp_id, time_id, work_day)"
+                + "VALUES(?,?,?,?)";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setInt(1,busID);
+                ps.setInt(2,pxID);
+                ps.setInt(3,timeID);
+                ps.setDate(4, new java.sql.Date(date.getTime()));
+
+                ps.execute();
+
+                
+
+                showData();
+                //showBusEMP();
+                DBConnection.closeConnection(connection);
+
+                JOptionPane.showMessageDialog(null, "Phân công phụ xe thành công.");
+
+            }catch (SQLException ex) {
+                Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if(checkBusEMP1()==true ){
+
+            try{
+
+                Connection connection = DBConnection.getConnection();
+                String query3= "INSERT INTO dbo.WORK( bus_id, emp_id, time_id, work_day)"
+                + "VALUES(?,?,?,?)";
+                PreparedStatement ps3 = connection.prepareStatement(query3);
+                ps3.setInt(1,busID);
+                ps3.setInt(2,txID);
+                ps3.setInt(3,timeID);
+                ps3.setDate(4, new java.sql.Date(date.getTime()));
+
+                ps3.execute();
+
+                showData();
+                //showBusEMP();
+                DBConnection.closeConnection(connection);
+
+                JOptionPane.showMessageDialog(null, "Phân công tài xế thành công.");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+
+            try{
+
+                Connection connection = DBConnection.getConnection();
+                
+                 String query4= "INSERT INTO dbo.BUS_EMP( bus_id, emp_id)"
+                + "VALUES(?,?)";
+                PreparedStatement ps4 = connection.prepareStatement(query4);
+                ps4.setInt(1,busID);
+                ps4.setInt(2,txID);
+
+                ps4.execute();
+                
+                
+                String query3= "INSERT INTO dbo.WORK( bus_id, emp_id, time_id, work_day)"
+                + "VALUES(?,?,?,?)";
+                PreparedStatement ps3 = connection.prepareStatement(query3);
+                ps3.setInt(1,busID);
+                ps3.setInt(2,txID);
+                ps3.setInt(3,timeID);
+                ps3.setDate(4, new java.sql.Date(date.getTime()));
+
+                ps3.execute();
+
+               
+
+                showData();
+                //showBusEMP();
+                DBConnection.closeConnection(connection);
+
+                JOptionPane.showMessageDialog(null, "Phân công tài xế thành công.");
+
+            }catch (SQLException ex) {
+                Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        fillComboboxbus();
+        fillComboboxTX();
+        fillComboboxPX();
+        fillComboboxTIME();
+        
+        jbtAdd.setEnabled(true);
+        jbtDel.setEnabled(false);
+        
+
+    }//GEN-LAST:event_jbtAddActionPerformed
+
+    private void jbtDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDelActionPerformed
+
+        int result= JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?","Xóa", JOptionPane.YES_NO_OPTION);
+        if (result==JOptionPane.YES_OPTION){
+
+            int pos= tableMain.getSelectedRow();
+            String bus= tableMain.getModel().getValueAt(pos, 0).toString();
+            String emp= tableMain.getModel().getValueAt(pos, 2).toString();
+            String time= tableMain.getModel().getValueAt(pos, 5).toString();
+            String day= tableMain.getModel().getValueAt(pos, 8).toString();
+            
+            String daten= java.time.LocalDate.now().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date datew = null;
+            try {
+                datew = sdf.parse(day);
+            } catch (ParseException ex) {
+                Logger.getLogger(PhanCong.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Date date2 = null;
+            try {
+                date2 = sdf.parse(daten);
+            } catch (ParseException ex) {
+                Logger.getLogger(PhanCong.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            int rs = datew.compareTo(date2);
+            
+            if(rs > 0){
+                   
+            try{
+                Connection connection = DBConnection.getConnection();
+                String query= "DELETE FROM dbo.WORK WHERE bus_id= ? AND time_id=? AND work_day=?";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setString(1, bus);
+                //ps.setString(2, emp);
+                ps.setString(2, time);
+                ps.setString(3, day);
+
+                ps.executeUpdate();
+
+                showData();
+                //showBusEMP();
+                DBConnection.closeConnection(connection);
+
+                JOptionPane.showMessageDialog(null, "Xóa thành công.");
+            } catch (SQLException ex) {
+                Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }else{
+                JOptionPane.showMessageDialog(null, "Không thể xóa ngày phân công trong quá khứ!");
+            }
+        }
+
+        fillComboboxbus();
+        fillComboboxTX();
+        fillComboboxPX();
+        
+        
+        jbtDel.setEnabled(false);
+    }//GEN-LAST:event_jbtDelActionPerformed
+
+    private void cbbMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbMActionPerformed
+        fillComboboxDay();
+    }//GEN-LAST:event_cbbMActionPerformed
+
+    private void cbbBusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbBusActionPerformed
+        
+        //fillComboboxTIME();
+        
+    }//GEN-LAST:event_cbbBusActionPerformed
+
+    private void cbbBusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbBusItemStateChanged
+        fillComboboxTIME();
+    }//GEN-LAST:event_cbbBusItemStateChanged
+
+    private void cbbBusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbbBusMouseClicked
+//        fillComboboxTIME();
+    }//GEN-LAST:event_cbbBusMouseClicked
 
     /**
      * @param args the command line arguments
@@ -859,12 +1323,13 @@ public class PhanCong extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btChosse;
     private javax.swing.JComboBox<String> cbbBus;
     private javax.swing.JComboBox<String> cbbDay;
+    private javax.swing.JComboBox<String> cbbM;
     private javax.swing.JComboBox<String> cbbPX;
     private javax.swing.JComboBox<String> cbbTX;
     private javax.swing.JComboBox<String> cbbTime;
-    private javax.swing.JComboBox<String> cbbYear;
     private javax.swing.JTextPane inforText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -882,12 +1347,16 @@ public class PhanCong extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtAdd;
     private javax.swing.JButton jbtDel;
+    private javax.swing.JTextField jtfYear;
     private javax.swing.JTable tableMain;
     // End of variables declaration//GEN-END:variables
 }

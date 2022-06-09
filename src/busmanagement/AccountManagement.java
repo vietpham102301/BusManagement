@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import views.PhanCong;
@@ -29,6 +30,44 @@ public class AccountManagement extends javax.swing.JFrame {
     
     
     public static String infor;
+    
+    
+    
+     public boolean validUsername(String name)
+    {
+        Pattern pattern;
+        final String namePattern = "[a-zA-Z0-9]*";
+        
+        pattern = Pattern.compile(namePattern);
+        return pattern.matcher(name).matches();
+    }
+     
+     public boolean validEmail(String email)
+     {
+         Pattern pattern;
+         //final String emailPattern = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$";
+         pattern= Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+         
+         return pattern.matcher(email).matches();
+     }
+     
+     private boolean isDigits(String s)
+    {
+        if(s== null)
+        {
+            return false;
+        }
+        try{
+            Float.parseFloat(s);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+     
     
       public static Connection establishCon()
     {
@@ -132,8 +171,8 @@ public class AccountManagement extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(empQueryAll);
             while(rs.next())
             {
-                String empId =rs.getString("emp_id");
-                empIds.add(empId); // sua sau khong de moi id duoc
+                String empId =rs.getString("emp_id") +" - " +rs.getString("l_name")+ " "+rs.getString("f_name");
+                empIds.add(empId); // sua sau khong de moi id duoc done
             }
             
         }
@@ -166,6 +205,55 @@ public class AccountManagement extends javax.swing.JFrame {
     }
         return empIds;
     }
+    
+    public String getEmpIdForSelect(String empIdSelect)
+    {
+//         ArrayList<String> empIds = new ArrayList<>();
+        Connection con = establishCon();
+        Statement st =null;
+        String empId=""; 
+        try {
+            
+            String empQueryAll = "SELECT * FROM EMPLOYEE WHERE emp_id= "+ empIdSelect;
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(empQueryAll);
+            
+            if(rs.next())
+            {
+                empId =" - " +rs.getString("l_name")+ " "+rs.getString("f_name");
+//                empIds.add(empId); // sua sau khong de moi id duoc
+            }
+            
+        }
+         catch (Exception e){
+             e.printStackTrace();
+         }
+        finally{
+            if(st !=null)
+               {
+                   try{
+                       st.close();
+                   }
+                   catch (Exception e)
+                   {
+                       e.printStackTrace();
+                   }
+               }
+               
+              if(con !=null)
+               {
+                   try{
+                       con.close();
+                   }
+                   catch (Exception e)
+                   {
+                       e.printStackTrace();
+                   }
+               }
+              
+    }
+        return empId;
+    }
       
     public AccountManagement() {
         initComponents();
@@ -176,7 +264,8 @@ public class AccountManagement extends javax.swing.JFrame {
         {
             empIdCombo.addItem(empsId.get(i));
         }
-        deleteButton.setEnabled(false);
+        this.jButton10.requestFocus();
+        //deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
     }
 
@@ -212,7 +301,6 @@ public class AccountManagement extends javax.swing.JFrame {
         passwordText = new javax.swing.JTextField();
         emailText = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
-        deleteButton = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
         phoneNumberText = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -220,6 +308,8 @@ public class AccountManagement extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         accTable = new javax.swing.JTable();
         empIdCombo = new javax.swing.JComboBox<>();
+        jLabel17 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -316,16 +406,14 @@ public class AccountManagement extends javax.swing.JFrame {
         inforPanel.setLayout(inforPanelLayout);
         inforPanelLayout.setHorizontalGroup(
             inforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(inforPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inforPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 19, Short.MAX_VALUE))
-            .addGroup(inforPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2))
+                .addGap(17, 17, 17))
             .addGroup(inforPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(inforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -339,11 +427,11 @@ public class AccountManagement extends javax.swing.JFrame {
         inforPanelLayout.setVerticalGroup(
             inforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inforPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                .addGap(34, 34, 34)
+                .addGap(22, 22, 22)
                 .addComponent(empmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -417,14 +505,6 @@ public class AccountManagement extends javax.swing.JFrame {
             }
         });
 
-        deleteButton.setText("Xóa");
-        deleteButton.setFocusPainted(false);
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
-
         updateButton.setText("Sửa");
         updateButton.setFocusPainted(false);
         updateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -455,7 +535,7 @@ public class AccountManagement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Tên tài khoản", "Mật khẩu", "Mã nhân viên", "Email", "Số điện thoại"
+                "ID", "Tên tài khoản", "Mật khẩu", "Mã nhân viên", "Email", "Số điện thoại"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -485,6 +565,9 @@ public class AccountManagement extends javax.swing.JFrame {
             }
         });
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Quản lý tài khoản");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -492,44 +575,57 @@ public class AccountManagement extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(9, 9, 9)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(106, 106, 106)
-                            .addComponent(phoneNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(empIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(210, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGap(9, 9, 9)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(106, 106, 106)
+                                    .addComponent(phoneNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(empIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(210, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(118, 118, 118))))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(376, 376, 376)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel17))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
@@ -547,11 +643,10 @@ public class AccountManagement extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(empIdCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
@@ -606,34 +701,100 @@ public class AccountManagement extends javax.swing.JFrame {
         
         String username, password, email, phoneNumber, empId;
         
-        username = usernameText.getText();
-        password = passwordText.getText();
-        email = emailText.getText();
-        phoneNumber = phoneNumberText.getText();
-        empId = empIdCombo.getSelectedItem().toString();
+        username = usernameText.getText().trim();
+        password = passwordText.getText().trim();
+        email = emailText.getText().trim();
+        phoneNumber = phoneNumberText.getText().trim();
+        empId = empIdCombo.getSelectedItem().toString().split("-")[0];
         Connection con = establishCon();
         PreparedStatement ps = null;
         ResultSet rs;
-        if(username.equals("") || password.equals("") || email.equals("") || phoneNumber.equals("") || empId.equals("--Mã nhân viên--"))
+        Statement st = null;
+        if(username.equals("") || password.equals("") || email.equals("") || phoneNumber.equals(""))
         {
-            JOptionPane.showMessageDialog(this, "Chưa nhập đủ thông tin");
+            JOptionPane.showMessageDialog(this, "Vui lòng điển vào tất cả các trường");
+        }
+        else if(empId.equals("--Mã nhân viên--"))
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên");
         }
         else{
-            if(phoneNumber.length() !=10)
+            
+            
+            if(!validUsername(username))
+            {
+                System.out.println(username);
+                System.out.println(validUsername(username));
+                
+                JOptionPane.showMessageDialog(this, "Tên tài khoản hợp lệ chỉ chứa ký từ a-z, A-Z, 0-9 và không có khoảng trắng");
+                return;
+            }
+            
+            if(!validEmail(email))
+            {
+                JOptionPane.showMessageDialog(this, "Email hợp lệ có dạng example@smt.com");
+            }
+            
+            if(!isDigits(phoneNumber))
             {
                 JOptionPane.showMessageDialog(this, "Số điện thoại phải gồm 10 chữ số");
-                phoneNumberText.setText("");
+                return;
             }
-            else{
+            else if(isDigits(phoneNumber))
+            {
+                if(phoneNumber.length() !=10)
+                {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải gồm 10 chữ số");
+                phoneNumberText.setText("");
+                return;
+                
+                }
+            }
+            
+            
             try{
                 String addStatement = "EXEC addAccount @username='" +username+"',@password= '"+password+"', @emp_id="+empId+", @email='"+email+"', @phone= '"+phoneNumber+"'";
-                ps = con.prepareCall(addStatement);
-               
-               
                 
+               
+               String checkExistSt = "SELECT user_id FROM ACCOUNT WHERE emp_id= "+ empId;
+               String checkEmail = "SELECT * FROM ACCOUNT WHERE email= '"+email+"'";
+               String checkPhone = "SELECT * FROM ACCOUNT WHERE phone= '"+phoneNumber+"'";
+               String checkUsername = "SELECT * FROM ACCOUNT WHERE username= '"+username+"'";
+               st = con.createStatement();
+               rs = st.executeQuery(checkExistSt);
+               if(rs.next())
+               {
+                   JOptionPane.showMessageDialog(this, "Mã nhân viên này đã có tài khoản");
+                   return;
+               }
+               
+               st = con.createStatement();
+               rs = st.executeQuery(checkEmail);
+               if(rs.next())
+               {
+                   JOptionPane.showMessageDialog(this, "Email trùng với email của nhân viên khác");
+                   return;
+               }
+               
+               st = con.createStatement();
+               rs = st.executeQuery(checkPhone);
+               if(rs.next())
+               {
+                   JOptionPane.showMessageDialog(this, "SÐT trùng với sđt của nhân viên khác");
+                   return;
+               }
+               
+               
+               st = con.createStatement();
+               rs = st.executeQuery(checkUsername);
+               if(rs.next())
+               {
+                   JOptionPane.showMessageDialog(this, "Tên tài khoản trùng với sđt của nhân viên khác");
+                   return;
+               }
              
                 // tomorrow clear table and debugs
-                
+                ps = con.prepareCall(addStatement);
                 rs = ps.executeQuery();
                 rs.next();
                 int id = rs.getInt("user_id");
@@ -682,64 +843,12 @@ public class AccountManagement extends javax.swing.JFrame {
                    }
                }
             }
-        }
+        
         }
 
         
 
     }//GEN-LAST:event_addButtonActionPerformed
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-        int row = accTable.getSelectedRow();
-        String cell = accTable.getModel().getValueAt(row, 0).toString();
-        String deleteQuery = "DELETE FROM ACCOUNT WHERE emp_id= "+cell;
-        Connection con = establishCon();
-        Statement st =null;
-        try{
-            st = con.createStatement();
-            st.executeUpdate(deleteQuery);
-            JOptionPane.showMessageDialog(this, "Xóa thành công");
-            
-            DefaultTableModel dm = (DefaultTableModel)accTable.getModel();
-            dm.removeRow(row);
-                    accTable.getSelectionModel().clearSelection();
-        usernameText.setText("");
-        passwordText.setText("");
-        emailText.setText("");
-        empIdCombo.setSelectedItem("--Mã nhân viên--");
-        phoneNumberText.setText("");
-        deleteButton.setEnabled(false);
-        updateButton.setEnabled(false);
-         
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        finally{
-            if(con!=null)
-            {
-                try{
-                    con.close();
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-            if(st != null)
-            {
-                try
-                {
-                    st.close();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
@@ -751,42 +860,127 @@ public class AccountManagement extends javax.swing.JFrame {
             String username, password, email, phoneNumber;
             String empId;
             
-            username = usernameText.getText();
-            password = passwordText.getText();
-            email = emailText.getText();
-            phoneNumber = phoneNumberText.getText();
+            username = usernameText.getText().trim();
+            password = passwordText.getText().trim();
+            email = emailText.getText().trim();
+            phoneNumber = phoneNumberText.getText().trim();
             empId = empIdCombo.getSelectedItem().toString();
             
-            model.setValueAt(username, selectedRow, 1);
-            model.setValueAt(password, selectedRow, 2);
-            model.setValueAt(email, selectedRow, 4);
-            model.setValueAt(empId, selectedRow, 3);
-            model.setValueAt(phoneNumber, selectedRow, 5);
+            
+        if(username.equals("") || password.equals("") || email.equals("") || phoneNumber.equals("") || empId.equals("--Mã nhân viên--"))
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng điển vào tất cả các trường");
+            return;
+        }
+        
+        if(!validUsername(username))
+            {
+                System.out.println(username);
+                System.out.println(validUsername(username));
+                
+                JOptionPane.showMessageDialog(this, "Tên tài khoản hợp lệ chỉ chứa ký từ a-z, A-Z, 0-9 và không có khoảng trắng");
+                return;
+            }
+            
+            if(!validEmail(email))
+            {
+                JOptionPane.showMessageDialog(this, "Email hợp lệ có dạng example@smt.com");
+                return;
+            }
+            
+            if(!isDigits(phoneNumber))
+            {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải gồm 10 chữ số");
+                return;
+            }
+            else if(isDigits(phoneNumber))
+            {
+                if(phoneNumber.length() !=10)
+                {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải gồm 10 chữ số");
+                phoneNumberText.setText("");
+                return;
+                
+                }
+            }
+            
+            
             
             Connection con = establishCon();
             Statement st;
+            ResultSet rs;
             String userId = accTable.getModel().getValueAt(selectedRow, 0).toString();
+            
+            
              try{
+                 
+//               String checkExistSt = "SELECT user_id FROM ACCOUNT WHERE emp_id= "+ empId;
+//               String checkEmail = "SELECT * FROM ACCOUNT WHERE email= '"+email+"'";
+//               String checkPhone = "SELECT * FROM ACCOUNT WHERE phone= '"+phoneNumber+"'";
+//               String checkUsername = "SELECT * FROM ACCOUNT WHERE username= '"+username+"'";
+////               st = con.createStatement();
+////               rs = st.executeQuery(checkExistSt);
+////               if(rs.next())
+////               {
+////                   JOptionPane.showMessageDialog(this, "Mã nhân viên này đã có tài khoản");
+////                   return;
+////               }
+//               
+//               st = con.createStatement();
+//               rs = st.executeQuery(checkEmail);
+//               if(rs.next() && )
+//               {
+//                   JOptionPane.showMessageDialog(this, "Email trùng với email của nhân viên khác");
+//                   return;
+//               }
+//               
+//               st = con.createStatement();
+//               rs = st.executeQuery(checkPhone);
+//               if(rs.next())
+//               {
+//                   JOptionPane.showMessageDialog(this, "SÐT trùng với sđt của nhân viên khác");
+//                   return;
+//               }
+               
+               
+//               st = con.createStatement();
+//               rs = st.executeQuery(checkUsername);
+//               if(rs.next())
+//               {
+//                   JOptionPane.showMessageDialog(this, "Tên tài khoản trùng với sđt của nhân viên khác");
+//                   return;
+//               }
+              
+                 
                 String updateSql = "UPDATE ACCOUNT "+
                         "SET username= '" +username+"', password= '"+password+"', emp_id= "+empId +", email = '"+email+"', phone='" +phoneNumber
                         + "' WHERE user_id =" +userId; 
                 st = con.createStatement();
                 st.executeUpdate(updateSql);
                 JOptionPane.showMessageDialog(this, "Sửa thành công");
+                model.setValueAt(username, selectedRow, 1);
+            model.setValueAt(password, selectedRow, 2);
+            model.setValueAt(email, selectedRow, 4);
+            model.setValueAt(empId, selectedRow, 3);
+            model.setValueAt(phoneNumber, selectedRow, 5);
                 
-                        accTable.getSelectionModel().clearSelection();
+        accTable.getSelectionModel().clearSelection();
         usernameText.setText("");
         passwordText.setText("");
         emailText.setText("");
         empIdCombo.setSelectedItem("--Mã nhân viên--");
         phoneNumberText.setText("");
-        deleteButton.setEnabled(false);
+        //deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
+        empIdCombo.setEnabled(true);
+        addButton.setEnabled(true);
                 
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+//                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Kiểm tra lại email và số điện thoại có bị trùng không");
+                return;
             }
         }
         
@@ -799,6 +993,8 @@ public class AccountManagement extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        empIdCombo.setEnabled(true);
+        addButton.setEnabled(true);
         accTable.getSelectionModel().clearSelection();
         usernameText.setText("");
         passwordText.setText("");
@@ -806,7 +1002,7 @@ public class AccountManagement extends javax.swing.JFrame {
         empIdCombo.setSelectedItem("--Mã nhân viên--");
         phoneNumberText.setText("");
         
-        deleteButton.setEnabled(false);
+        //deleteButton.setEnabled(false);
         updateButton.setEnabled(false);
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -819,14 +1015,16 @@ public class AccountManagement extends javax.swing.JFrame {
     private void accTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accTableMouseClicked
         // TODO add your handling code here:
         int selectedRow = accTable.getSelectedRow();
+        addButton.setEnabled(false);
         DefaultTableModel dfModel = (DefaultTableModel) accTable.getModel();
         usernameText.setText(dfModel.getValueAt(selectedRow, 1).toString());
         passwordText.setText(dfModel.getValueAt(selectedRow, 2).toString());
-        empIdCombo.setSelectedItem(dfModel.getValueAt(selectedRow, 3).toString());
+        empIdCombo.setSelectedItem(dfModel.getValueAt(selectedRow, 3).toString() +getEmpIdForSelect(dfModel.getValueAt(selectedRow, 3).toString()));
         emailText.setText(dfModel.getValueAt(selectedRow, 4).toString());
         phoneNumberText.setText(dfModel.getValueAt(selectedRow, 5).toString());
-        deleteButton.setEnabled(true);
+       // deleteButton.setEnabled(true);
         updateButton.setEnabled(true);
+        empIdCombo.setEnabled(false);
     }//GEN-LAST:event_accTableMouseClicked
 
     private void empIdComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIdComboActionPerformed
@@ -866,21 +1064,22 @@ public class AccountManagement extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        QLTime time = new QLTime();
-                time.setVisible(true);
-                time.setLocationRelativeTo(null);
+       
+                QLChuyen route = new QLChuyen();
+                route.setVisible(true);
+                route.setLocationRelativeTo(null);
                // System.out.println(this.infor);
-               time.setInfor(this.infor);
+               route.setInfor(this.infor);
                this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-         QLChuyen route = new QLChuyen();
-                route.setVisible(true);
-                route.setLocationRelativeTo(null);
+         QLTime time = new QLTime();
+                time.setVisible(true);
+                time.setLocationRelativeTo(null);
                // System.out.println(this.infor);
-               route.setInfor(this.infor);
+               time.setInfor(this.infor);
                this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -896,7 +1095,7 @@ public class AccountManagement extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        Thongke st = new Thongke();
+        Statistic st = new Statistic();
                 st.setVisible(true);
                 st.setLocationRelativeTo(null);
                // System.out.println(this.infor);
@@ -947,7 +1146,6 @@ public class AccountManagement extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable accTable;
     private javax.swing.JButton addButton;
-    private javax.swing.JButton deleteButton;
     private javax.swing.JTextField emailText;
     private javax.swing.JComboBox<String> empIdCombo;
     private javax.swing.JButton empmButton;
@@ -964,6 +1162,7 @@ public class AccountManagement extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -972,6 +1171,7 @@ public class AccountManagement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField passwordText;
     private javax.swing.JTextField phoneNumberText;
     private javax.swing.JButton updateButton;

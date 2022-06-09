@@ -5,6 +5,9 @@
 package views;
 
 
+import busmanagement.AccountManagement;
+import busmanagement.BusManagement;
+import busmanagement.EmployeeManagement;
 import busmanagement.Login;
 import java.beans.Statement;
 import java.sql.Connection;
@@ -98,10 +101,25 @@ public class Thongke extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(256, 720));
 
         jButton1.setText("Quản lý nhân viên");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Quản lý xe bus");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Quản lý tài khoản");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Phân công");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -125,6 +143,11 @@ public class Thongke extends javax.swing.JFrame {
         });
 
         jButton8.setText("Thống kê");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Đăng xuất");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -169,7 +192,7 @@ public class Thongke extends javax.swing.JFrame {
                         .addGap(16, 16, 16)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,7 +211,7 @@ public class Thongke extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,7 +229,7 @@ public class Thongke extends javax.swing.JFrame {
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         tableMain.setModel(new javax.swing.table.DefaultTableModel(
@@ -767,24 +790,37 @@ public class Thongke extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         PhanCong qlc= new PhanCong();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        QLChuyen qlc= new QLChuyen();
+        
+                     QLTime qlc= new QLTime();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        QLTime qlc= new QLTime();
+       QLChuyen qlc= new QLChuyen();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         QLVe qlc= new QLVe();
+        qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -799,6 +835,43 @@ public class Thongke extends javax.swing.JFrame {
               // System.out.println(bus.infor);
                this.dispose();  
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         EmployeeManagement emp = new EmployeeManagement();
+                
+                emp.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               emp.setInfor(this.infor);
+               emp.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+         AccountManagement acc = new AccountManagement();
+                
+                acc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               acc.setInfor(this.infor);
+               acc.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+            // TODO add your handling code here:
+            BusManagement bus = new BusManagement();
+                
+                bus.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               bus.setInfor(this.infor);
+               bus.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments

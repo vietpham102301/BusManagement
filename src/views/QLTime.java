@@ -4,7 +4,7 @@
  */
 package views;
 
-import busmanagement.Login;
+import busmanagement.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,10 +34,53 @@ public class QLTime extends javax.swing.JFrame {
         this.infor = infor;
         this.inforText.setText(infor);
     }
+       
+       
+         public boolean validTimeFormat(String name)
+    {
+        Pattern pattern;
+        final String namePattern = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
+        
+        pattern = Pattern.compile(namePattern);
+        return pattern.matcher(name).matches();
+    }
+         
+         
+         private boolean compareValidTime(String startTime, String endTime)
+         {
+             int sHour, sMin;
+             int eHour, eMin;
+             
+             sHour = Integer.parseInt(startTime.split(":")[0]);
+             sMin = Integer.parseInt(startTime.split(":")[1]);
+             
+             eHour = Integer.parseInt(endTime.split(":")[0]);
+             eMin = Integer.parseInt(endTime.split(":")[1]);
+             
+             if(sHour < eHour)
+             {
+                 return true;
+             }else if(sHour == eHour)
+             {
+                 if(sMin < eMin)
+                 {
+                     return true;
+                 }else
+                     return false;
+             }
+             else
+             {
+                 return false;
+             }
+             
+         }
     
     
     public QLTime() {
         initComponents();
+        jButton5.requestFocus();
+        jLabel2.setText("<html>Thời gian vào ca<br>(hh:mm):</html>");
+        jLabel3.setText("<html>Thời gian kết thúc ca<br>(hh:mm):</html>");
     }
 
     /**
@@ -63,13 +108,18 @@ public class QLTime extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableMain = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jtfTimeStart = new javax.swing.JTextField();
-        jtfTimeEnd = new javax.swing.JTextField();
         jbtFix = new javax.swing.JButton();
         jbtDel = new javax.swing.JButton();
         jbtAdd = new javax.swing.JButton();
+        btReset = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        startTimeText = new javax.swing.JTextField();
+        endTimeText = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel4 = new javax.swing.JLabel();
+        cbbTx = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -77,10 +127,25 @@ public class QLTime extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(256, 720));
 
         jButton1.setText("Quản lý nhân viên");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Quản lý xe bus");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Quản lý tài khoản");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Phân công");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -97,6 +162,11 @@ public class QLTime extends javax.swing.JFrame {
         });
 
         jButton6.setText("Quản lý tuyến xe");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Thống kê");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -138,11 +208,6 @@ public class QLTime extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -156,15 +221,23 @@ public class QLTime extends javax.swing.JFrame {
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 19, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(54, 54, 54)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,7 +255,7 @@ public class QLTime extends javax.swing.JFrame {
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         tableMain.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -197,6 +270,11 @@ public class QLTime extends javax.swing.JFrame {
                 "ID Tuyến", "Thời gian bắt đầu", "Thời gian kết thúc"
             }
         ));
+        tableMain.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                tableMainComponentAdded(evt);
+            }
+        });
         tableMain.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 tableMainAncestorAdded(evt);
@@ -211,13 +289,17 @@ public class QLTime extends javax.swing.JFrame {
                 tableMainMouseClicked(evt);
             }
         });
+        tableMain.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentMoved(java.awt.event.ComponentEvent evt) {
+                tableMainComponentMoved(evt);
+            }
+        });
+        tableMain.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tableMainKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableMain);
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Thời gian bắt đầu");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Thời gian kết thúc");
 
         jbtFix.setText("Sửa");
         jbtFix.addActionListener(new java.awt.event.ActionListener() {
@@ -240,48 +322,64 @@ public class QLTime extends javax.swing.JFrame {
             }
         });
 
+        btReset.setText("Đặt lại");
+        btReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btReset, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jbtFix, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(232, 232, 232)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfTimeStart, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfTimeEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(234, 234, 234))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtfTimeStart, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfTimeEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addContainerGap(93, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jbtFix, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jbtDel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jbtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btReset, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(42, 42, 42))
         );
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Thời gian vào ca (hh:mm):");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Thời gian kết ca (hh:mm):");
+
+        startTimeText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                startTimeTextKeyTyped(evt);
+            }
+        });
+
+        endTimeText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                endTimeTextKeyTyped(evt);
+            }
+        });
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel17.setText("Quản lý chuyến xe");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Tuyến xe:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -289,11 +387,35 @@ public class QLTime extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(414, 414, 414)
+                                .addComponent(jLabel17))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(397, 397, 397)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(124, 124, 124)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(startTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(149, 149, 149)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(endTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(111, 111, 111)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbbTx, 0, 110, Short.MAX_VALUE))))
+                        .addGap(201, 201, 201))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,9 +423,23 @@ public class QLTime extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(8, 8, 8)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(95, 95, 95)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endTimeText, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbTx, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -316,7 +452,7 @@ public class QLTime extends javax.swing.JFrame {
     private void showData(){
         try{
             //tableMain.removeAll();
-            String[] arr = {"ID Thời gian","Thời gian bắt đầu","Thời gian kết thúc"};
+            String[] arr = {"ID","Thời gian vào ca","Thời gian kết ca","Tuyến xe"};
             DefaultTableModel model=  new DefaultTableModel(arr,0);
             
             Connection connection = DBConnection.getConnection();
@@ -326,8 +462,9 @@ public class QLTime extends javax.swing.JFrame {
             while(rs.next()){
                 Vector vt= new Vector();
                 vt.add(rs.getString("time_id"));
-                vt.add(rs.getString("start_time"));
-                vt.add(rs.getString("end_time"));
+                vt.add(rs.getString("start_time").split(":")[0]+":"+rs.getString("start_time").split(":")[1]);
+                vt.add(rs.getString("end_time").split(":")[0]+":"+rs.getString("end_time").split(":")[1]);
+                vt.add(rs.getString("route_id"));
                 
                 model.addRow(vt);
     
@@ -340,66 +477,123 @@ public class QLTime extends javax.swing.JFrame {
         
 
     }
-//      private boolean checkID(){
-//        try{
-//            Connection connection = DBConnection.getConnection();
-//            String query= "SELECT * FROM dbo.TIME WHERE time_id = ?";
-//            PreparedStatement ps = connection.prepareStatement(query);
-//            ps.setString(1, jtfID.getText());
-//            ResultSet rs= ps.executeQuery();
-//            while(rs.next()){
-//                return true;
-//            }
-//            
-//        } catch (SQLException ex) {
-//            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
-//    
+    
+    
+    
+    private void fillComboboxTIME() {
+
+        try {
+            Connection connection = DBConnection.getConnection();
+            String query = "select route_id from ROUTE ";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            DefaultComboBoxModel cbb = (DefaultComboBoxModel) cbbTx.getModel();
+            cbb.removeAllElements();
+            cbb.addElement("--Chọn tuyến--");
+            while (rs.next()) {
+                int id = rs.getInt("route_id");
+
+                cbb.addElement(id);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+      private boolean checkID(){
+          
+        int pos= tableMain.getSelectedRow();
+        String id= tableMain.getModel().getValueAt(pos, 0).toString();
+          
+        try{
+            Connection connection = DBConnection.getConnection();
+            String query= "SELECT time_id FROM dbo.WORK WHERE time_id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, id);
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     
     private void tableMainAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tableMainAncestorAdded
         
         showData();
+        
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        
+        fillComboboxTIME();
+        
     }//GEN-LAST:event_tableMainAncestorAdded
 
     private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
         
         
-//        if(jtfID.getText().equals("")){
-//            JOptionPane.showMessageDialog(null, "ID thời gian không được rỗng.");
-//            jtfID.requestFocus();
-//            return;
-        if(jtfTimeStart.getText().equals("")){
+
+        if(startTimeText.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Thời gian bắt đầu không được rỗng.");
-            jtfTimeStart.requestFocus();
+            startTimeText.requestFocus();
             return;
-        }else if(jtfTimeEnd.getText().equals("")){
+        }else if(endTimeText.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Thời gian kết thúc không được rỗng.");
-            jtfTimeEnd.requestFocus();
+            endTimeText.requestFocus();
             return;
         }
         
-//        if(checkID()== true){
-//            JOptionPane.showMessageDialog(null, "ID thời gian đã tồn tại.");
-//            jtfID.requestFocus();
+        if(cbbTx.getSelectedItem() == "--Chọn tuyến--"){
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn tuyến xe!");
+            return;
+        }
+        
+        
+        if(!validTimeFormat(startTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Định dạng thời gian hợp lệ là 24h (hh:mm)");
+            return;
+        }
+        
+        if(!validTimeFormat(endTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Định dạng thời gian không hợp lệ (hh:mm)");
+            return;
+        }
+        
+        if(!compareValidTime(startTimeText.getText(), endTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Thời gian vào ca phải nhỏ hơn thời gian kết thúc ca");
+            return;
+        }
+        
+        
+        
+
 
             try{
                 Connection connection = DBConnection.getConnection();
-                String query= "INSERT INTO dbo.Time(start_time, end_time)"
-                        + "VALUES(?,?)";
+                String query= "INSERT INTO dbo.TIME(start_time, end_time, route_id)"
+                        + "VALUES(?,?,?)";
                 PreparedStatement ps = connection.prepareStatement(query);
                 //ps.setString(1,jtfID.getText());
-                ps.setString(1,jtfTimeStart.getText());
-                ps.setString(2,jtfTimeEnd.getText());
+                ps.setString(1,startTimeText.getText());
+                ps.setString(2,endTimeText.getText());
+                ps.setString(3,cbbTx.getSelectedItem().toString() );
                 
                 ps.execute();
                 showData();
                 DBConnection.closeConnection(connection);
                 
                 //jtfID.setText("");
-                jtfTimeStart.setText("");
-                jtfTimeEnd.setText("");
+                startTimeText.setText("");
+                endTimeText.setText("");
                 //jtfTime.setText("");
                 JOptionPane.showMessageDialog(null, "Thêm thành công.");
                 
@@ -418,6 +612,10 @@ public class QLTime extends javax.swing.JFrame {
             int pos= tableMain.getSelectedRow();
             String data= tableMain.getModel().getValueAt(pos, 0).toString();
             
+            if(checkID()== true){
+            JOptionPane.showMessageDialog(null, "Chuyến này đang được phân công không thể xóa!");
+            }else{
+                 
             try{
                 Connection connection = DBConnection.getConnection();
                 String query= "DELETE FROM dbo.TIME WHERE time_id= ?";
@@ -426,12 +624,22 @@ public class QLTime extends javax.swing.JFrame {
                 ps.executeUpdate();
                 showData();
                 DBConnection.closeConnection(connection);
-                
+                startTimeText.setText("");
+                endTimeText.setText("");
                 JOptionPane.showMessageDialog(null, "Xóa thành công.");
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
             }
+            }
+        }else{
+            startTimeText.setText("");
+                endTimeText.setText("");
         }
+        
+        jbtAdd.setEnabled(true);
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        
     }//GEN-LAST:event_jbtDelActionPerformed
 
     private void jbtFixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtFixActionPerformed
@@ -440,58 +648,116 @@ public class QLTime extends javax.swing.JFrame {
             String data= tableMain.getModel().getValueAt(pos, 0).toString();
             //System.out.println(data);
             
+            if(startTimeText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Thời gian bắt đầu không được rỗng.");
+            startTimeText.requestFocus();
+            return;
+        }else if(endTimeText.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Thời gian kết thúc không được rỗng.");
+            endTimeText.requestFocus();
+            return;
+        }
+        if(!validTimeFormat(startTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Định dạng thời gian hợp lệ là 24h (hh:mm)");
+            return;
+        }
+        
+        if(!validTimeFormat(endTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Định dạng thời gian không hợp lệ (hh:mm)");
+            return;
+        }
+        
+        if(!compareValidTime(startTimeText.getText(), endTimeText.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Thời gian vào ca phải nhỏ hơn thời gian kết thúc ca");
+            return;
+        }
+            
             
             try{
                 Connection connection = DBConnection.getConnection();
-                String query= "UPDATE TIME SET start_time=? , end_time= ? WHERE time_id="+data;
+                String query= "UPDATE TIME SET start_time=? , end_time= ?, route_id=? WHERE time_id="+data;
                 PreparedStatement ps = connection.prepareStatement(query);
-                ps.setString(1,jtfTimeStart.getText());
-                ps.setString(2,jtfTimeEnd.getText());
+                ps.setString(1,startTimeText.getText());
+                ps.setString(2,endTimeText.getText());
+                ps.setString(3,cbbTx.getSelectedItem().toString());
                 
                 ps.executeUpdate();
 
                 showData();
                 DBConnection.closeConnection(connection);
+                startTimeText.setText("");
+                endTimeText.setText("");
+                cbbTx.setSelectedItem("--Chọn tuyến--");
                 
                 JOptionPane.showMessageDialog(null, "Sửa thành công.");
             } catch (SQLException ex) {
                 Logger.getLogger(QLChuyen.class.getName()).log(Level.SEVERE, null, ex);
+                startTimeText.setText("");
+                endTimeText.setText("");
             }
         
+            jbtAdd.setEnabled(true);
+            jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+            
     }//GEN-LAST:event_jbtFixActionPerformed
 
     private void tableMainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMainMouseClicked
         
         int pos= tableMain.getSelectedRow();
-        //jtfID.setText(tableMain.getModel().getValueAt(pos, 0).toString());
-        jtfTimeStart.setText(tableMain.getModel().getValueAt(pos, 1).toString());
-        jtfTimeEnd.setText(tableMain.getModel().getValueAt(pos, 2).toString());
+        
+        
+        
+        startTimeText.setText(tableMain.getModel().getValueAt(pos, 1).toString());
+        endTimeText.setText(tableMain.getModel().getValueAt(pos, 2).toString());
+        cbbTx.setSelectedItem(Integer.parseInt(tableMain.getModel().getValueAt(pos, 3).toString()));
+        
+        
+        jbtDel.setEnabled(true);
+        jbtFix.setEnabled(true);
+        jbtAdd.setEnabled(false);
         
     }//GEN-LAST:event_tableMainMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         PhanCong qlc= new PhanCong();
+         qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
                                     
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        QLChuyen qlc= new QLChuyen();
-                    qlc.setVisible(true);
-                    this.dispose();
+        QLTime time = new QLTime();
+                
+                time.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               time.setInfor(this.infor);
+               time.setVisible(true);
+               this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         QLVe qlc= new QLVe();
+            qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
                     this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        Thongke qlc= new Thongke();
+        Statistic qlc= new Statistic();
+         qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
                     qlc.setVisible(true);
-                    this.dispose();
+                    this.dispose();;
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -504,6 +770,78 @@ public class QLTime extends javax.swing.JFrame {
               // System.out.println(bus.infor);
                this.dispose();  
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void btResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResetActionPerformed
+        
+        startTimeText.setText("");
+        endTimeText.setText("");
+        cbbTx.setSelectedIndex(0);
+        jbtDel.setEnabled(false);
+        jbtFix.setEnabled(false);
+        jbtAdd.setEnabled(true);
+    }//GEN-LAST:event_btResetActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        EmployeeManagement emp = new EmployeeManagement();
+                
+                emp.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               emp.setInfor(this.infor);
+               emp.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        AccountManagement acc = new AccountManagement();
+                
+                acc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               acc.setInfor(this.infor);
+               acc.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+         BusManagement bus = new BusManagement();
+                
+                bus.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               bus.setInfor(this.infor);
+               bus.setVisible(true);
+               this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void startTimeTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_startTimeTextKeyTyped
+       
+    }//GEN-LAST:event_startTimeTextKeyTyped
+
+    private void endTimeTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_endTimeTextKeyTyped
+        
+    }//GEN-LAST:event_endTimeTextKeyTyped
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        QLChuyen qlc= new QLChuyen();
+         qlc.setLocationRelativeTo(null);
+               // System.out.println(this.infor);
+               qlc.setInfor(this.infor);
+                    qlc.setVisible(true);
+                    this.dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void tableMainComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_tableMainComponentAdded
+        
+        
+        
+    }//GEN-LAST:event_tableMainComponentAdded
+
+    private void tableMainKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableMainKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tableMainKeyPressed
+
+    private void tableMainComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tableMainComponentMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tableMainComponentMoved
 
     /**
      * @param args the command line arguments
@@ -542,6 +880,9 @@ public class QLTime extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btReset;
+    private javax.swing.JComboBox<String> cbbTx;
+    private javax.swing.JTextField endTimeText;
     private javax.swing.JTextPane inforText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -553,17 +894,19 @@ public class QLTime extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbtAdd;
     private javax.swing.JButton jbtDel;
     private javax.swing.JButton jbtFix;
-    private javax.swing.JTextField jtfTimeEnd;
-    private javax.swing.JTextField jtfTimeStart;
+    private javax.swing.JTextField startTimeText;
     private javax.swing.JTable tableMain;
     // End of variables declaration//GEN-END:variables
 }
